@@ -1,0 +1,43 @@
+PhotoPea
+https://www.photopea.com/
+https://www.youtube.com/watch?v=7OU0GDw8fyY
+
+https://relativity.net.au/gaming/glsl/Example.html
+
+https://www.khronos.org/files/opengles_shading_language.pdf
+
+https://stackoverflow.com/questions/38351778/conversion-from-numpy-array-float32-to-numpy-array-float64
+
+https://en.wikibooks.org/wiki/OpenGL_Programming/Object_selection
+
+https://registry.khronos.org/OpenGL/specs/gl/glspec46.core.pdf
+
+https://stackoverflow.com/questions/24903403/how-put-different-colors-at-front-and-back-sides-of-quad
+
+https://www.youtube.com/watch?v=DLKN0jExRIM
+https://antongerdelan.net/opengl/raycasting.html
+
+        # # Create the texture object for the depth buffer
+        # glBindFramebuffer(GL_FRAMEBUFFER, self.FBO)
+        # glBindTexture(GL_TEXTURE_2D, self.depthTexture)
+        # glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, self.WindowWidth, self.WindowHeight, 0, GL_DEPTH_COMPONENT,
+        #              GL_FLOAT, None)
+        # glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, self.depthTexture, 0)
+        # #
+        # # # Verify that the FBO is correct
+        # status = glCheckFramebufferStatus(GL_FRAMEBUFFER)
+        # #
+        # if status != GL_FRAMEBUFFER_COMPLETE:
+        #     print("FB error, status: 0x%x\n", status)
+        #     exit(1)
+        #
+        # # Restore the default frame buffer
+        # glBindTexture(GL_TEXTURE_2D, 0)
+        # glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
+https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing
+
+https://learnopengl.com/Advanced-OpenGL/Advanced-GLSL
+
+
+https://www.google.com/search?q=unwrap+multiple+objects+at+once+blender&rlz=1C1CHBF_enAU874AU874&oq=unwrap+multiple+objects+at+once+blender&aqs=chrome..69i57j0i22i30j0i390i650l5.9644j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_k5DlZOz5LMmL2roPic-JeA_26
