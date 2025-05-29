@@ -6,6 +6,15 @@ class LoadTexture:
     def __init__(self, image_filename=None):
         self.image = None
         self.id = glGenTextures(1)
+        # Check for OpenGL 3.0 or later
+        if glGetIntegerv(GL_MAJOR_VERSION) >= 3:
+            print("OpenGL version is 3.0 or later")
+            version = glGetString(GL_VERSION)
+            print("OpenGL version is {}".format(version))
+        else:
+            print("OpenGL version is less than 3.0")
+            version = glGetString(GL_VERSION)
+            print("OpenGL version is {}".format(version))
         if image_filename is not None:
             self.image = pygame.image.load(image_filename)
             self.load()
