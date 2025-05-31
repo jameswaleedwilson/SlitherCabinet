@@ -12,20 +12,19 @@ from PyQt5.QtWidgets import QSplashScreen
 class AnimatedSplashScreen(QSplashScreen):
     def __init__(self):
 
-        self.dir = QDir("frames")
+        self.dir = QDir("splashscreen_frames")
         self.dir.setFilter(QDir.Files | QDir.NoDotAndDotDot)  # Filter to get only files, excluding "." and ".."
         self.file_names = self.dir.entryList()
 
         self.pixmap = []
         for i in range(len(self.file_names)):
-            path = "frames/" + self.file_names[i]
+            path = "splashscreen_frames/" + self.file_names[i]
             self.pixmap.append(QPixmap(path))
 
         super().__init__(self.pixmap[0])
 
         self.setWindowTitle("Slither")
         self.setWindowIcon(QIcon("icons/window.png"))
-        # self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
         self.setEnabled(False)
 
         self.duration = 42

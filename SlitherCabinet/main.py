@@ -95,7 +95,7 @@ class MainApp(MainWindow):
         # initialise shaders
         self.shader_textured = CompileShader("shaders/textured.vert", "shaders/textured.frag")
         # animation
-        self.animation = Animate()
+        #self.animation = Animate()
         # initialise objects
         self.axes_center = LoadObject("meshesOBJ/axes_center.obj", "textures/yellow.png",
                                       shader=self.shader_textured)
