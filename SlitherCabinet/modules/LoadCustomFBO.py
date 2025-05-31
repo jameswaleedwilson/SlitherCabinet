@@ -1,7 +1,5 @@
-from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
-from .ShaderArrays import *
+from .ShaderVectors import *
 from .LoadTexture import LoadTexture
 from .ShaderUniforms import *
 from .TransformationMatrices import *
@@ -37,19 +35,19 @@ class LoadCustomFBO:
         glBindVertexArray(self.VAO)
 
         if self.vertices is not None:
-            vertices = ShaderArrays("vec3", self.vertices)
+            vertices = ShaderVectors("vec3", self.vertices)
             vertices.find_variable(self.shader.link_shader, "vertices")
 
         if self.vertex_colors is not None:
-            vertex_colors = ShaderArrays("vec3", self.vertex_colors)
+            vertex_colors = ShaderVectors("vec3", self.vertex_colors)
             vertex_colors.find_variable(self.shader.link_shader, "vertex_color")
 
         if self.vertex_normals is not None:
-            vertex_normals = ShaderArrays("vec3", self.vertex_normals)
+            vertex_normals = ShaderVectors("vec3", self.vertex_normals)
             vertex_normals.find_variable(self.shader.link_shader, "vertex_normal")
 
         if self.vertex_uvs is not None:
-            vertex_uvs = ShaderArrays("vec2", self.vertex_uvs)
+            vertex_uvs = ShaderVectors("vec2", self.vertex_uvs)
             vertex_uvs.find_variable(self.shader.link_shader, "vertex_uv")
 
         # do not change order

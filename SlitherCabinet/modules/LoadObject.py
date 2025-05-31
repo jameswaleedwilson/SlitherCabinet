@@ -12,7 +12,6 @@ class LoadObject(LoadDefaultFBO, LoadCustomFBO):
                  location=pygame.Vector3(0, 0, 0),
                  rotation=TransformationMatrices(0, pygame.Vector3(0, 1, 0)),
                  # this may be a double up with move scale???
-                 # no, this is initial position
                  std_scale=pygame.Vector3(1, 1, 1),
                  move_rotation=TransformationMatrices(0, pygame.Vector3(0, 1, 0)),
                  move_translate=pygame.Vector3(0, 0, 0),
@@ -23,7 +22,6 @@ class LoadObject(LoadDefaultFBO, LoadCustomFBO):
         # change the above to pass colour through
         coordinates, triangles, uvs, uvs_ind, normals, normal_ind = self.load_drawing(obj_filename)
         vertices = format_vertices(coordinates, triangles)
-        # print(vertices)
         vertex_normals = format_vertices(normals, normal_ind)
         vertex_uvs = format_vertices(uvs, uvs_ind)
         texture = []

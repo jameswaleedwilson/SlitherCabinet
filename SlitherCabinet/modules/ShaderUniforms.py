@@ -12,19 +12,11 @@ class ShaderUniforms:
 
     def load(self):
         if self.uniform_type == "int1":
-            glUniform1i(self.uniform_location,
-                        self.uniform_data)
+            glUniform1i(self.uniform_location, self.uniform_data)
         elif self.uniform_type == "vec3":
-            glUniform3f(self.uniform_location,
-                        self.uniform_data[0],
-                        self.uniform_data[1],
-                        self.uniform_data[2])
+            glUniform3f(self.uniform_location, self.uniform_data[0], self.uniform_data[1], self.uniform_data[2])
         elif self.uniform_type == "vec4":
-            glUniform4f(self.uniform_location,
-                        self.uniform_data[0],
-                        self.uniform_data[1],
-                        self.uniform_data[2],
-                        self.uniform_data[3])
+            glUniform4f(self.uniform_location, self.uniform_data[0], self.uniform_data[1], self.uniform_data[2], self.uniform_data[3])
         elif self.uniform_type == "mat4":
             glUniformMatrix4fv(self.uniform_location, 1, GL_TRUE, self.uniform_data)
         elif self.uniform_type == "sampler2D":

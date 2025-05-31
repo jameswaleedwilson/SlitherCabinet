@@ -4,8 +4,10 @@
 from PyQt5.QtCore import QTimer, QDir
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QSplashScreen
+
 # Local modules
 """ none """
+
 
 class AnimatedSplashScreen(QSplashScreen):
     def __init__(self):
@@ -23,7 +25,7 @@ class AnimatedSplashScreen(QSplashScreen):
 
         self.setWindowTitle("Slither")
         self.setWindowIcon(QIcon("icons/window.png"))
-        #self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
+        # self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
         self.setEnabled(False)
 
         self.duration = 42

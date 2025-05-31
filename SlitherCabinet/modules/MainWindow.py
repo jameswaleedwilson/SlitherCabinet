@@ -1,62 +1,73 @@
 # Operating system
 """None"""
 # Python packages
-"""import module_name:
-   This statement imports the entire module. To access items from the module, 
-   you need to use the module name as a prefix (e.g., module_name.item_name)."""
 import math
 import pygame
-"""from module_name import item_name:
-   This statement imports specific items directly into the current namespace. 
-   You can then access these items without the module name prefix (e.g., item_name)."""
+
 from PyQt5 import QtWidgets, uic, QtCore
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtWidgets import QApplication
 # Local modules
 """None"""
 
+
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-        """Class variables"""
-        self.CONST_ISO = math.degrees(math.asin(math.sqrt(2 / 3)))  # ~54.73 degrees
+        self.real_time_mouse_y = None
+        self.real_time_mouse_x = None
         self.doubleclick = None
         self.mouse_y = None
         self.mouse_x = None
-        self.real_time_mouse_x = None
-        self.real_time_mouse_y = None
-        # Mouse drag event
+        self.grid = None
+        self.axes = None
+        self.CONST_ISO = math.degrees(math.asin(math.sqrt(2 / 3)))  # ~54.73 degrees
+        # remove default window frame
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        # mouse drag
         self.first = True
-        self.pitch = None
         self.previous = pygame.Vector2(0, 0)
-        self.sensitivity = 2
+        self.sensitivity = 1
         self.roll = None
+        self.pitch = None
         self.yaw = None
         self.zoom = None
-        # Button state
+        # button state
         self.toolButton_clicked = 0
+        self.toolButton_previous = ""
         self.toolButton_dimetric_clicked = 0
         self.toolButton_isometric_clicked = 0
-        self.toolButton_previous = ""
+
+        uic.loadUi('ui/MainWindow.ui', self)
+        self.verticalSlider_glClipPlane.valueChanged.connect(self.gl_clip_plane_function)
+        self.verticalSlider_glClipPlane_value = None
+        self.label_clip.setText('Clipped ' + str(self.verticalSlider_glClipPlane_value))
+
+        # window setting for resize / maximize / minimize
+        self.window_settings_minimized = None
+        self.toolButton_minimize.clicked.connect(self.minimize_function)
+        self.toolButton_maximize.clicked.connect(self.maximize_function)
+        self.toolButton_close.clicked.connect(self.close_function)
+        # Environment
+        # View
         self.view = '3D'
         self.yaw2D = 0
-
-        """Load XML user interface from (QtDesigner) as .ui"""
-        uic.loadUi('ui/MainWindow.ui', self)
-
-        """Initialize Tool Buttons"""
+        self.toolButton_axes.clicked.connect(self.axes_function)
+        self.toolButton_grid.clicked.connect(self.grid_function)
         self.toolButton_2D.clicked.connect(self.two_d_function)
         self.toolButton_3D.clicked.connect(self.three_d_function)
         self.toolButton_trimetric.clicked.connect(self.trimetric_function)
         self.toolButton_dimetric.clicked.connect(self.dimetric_function)
         self.toolButton_isometric.clicked.connect(self.isometric_function)
+        self.toolButton_Xroll.clicked.connect(self.x_roll_function)
+        self.toolButton_Ypitch.clicked.connect(self.y_pitch_function)
+        self.toolButton_Zyaw.clicked.connect(self.z_yaw_function)
 
-    """Class functions"""
     def setup_ui(self):
         pass
 
-    # openGL specific
     def initialise_gl(self):
         pass
 
@@ -66,7 +77,21 @@ class MainWindow(QtWidgets.QMainWindow):
     def render_gl(self):
         pass
 
-    # x(roll) y(pitch) z(yaw)) rotations -> Z up environment
+    def minimize_function(self):
+        pass
+
+    def maximize_function(self):
+        pass
+
+    def close_function(self):
+        pass
+
+    def axes_function(self, event):
+        self.axes = event
+
+    def grid_function(self, event):
+        self.grid = event
+
     def two_d_function(self):
         # set view
         self.view = '2D'
@@ -235,7 +260,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.roll = self.CONST_ISO
         self.pitch = 0
 
-    """Mouse Event filter in openGLWidget"""
+    def gl_clip_plane_function(self, value):
+        self.verticalSlider_glClipPlane_value = value
+        self.label_clip.setText('Clipped ' + str(value))
+
     def eventFilter(self, source, event):
         # left button double click
         if event.type() == QtCore.QEvent.MouseButtonDblClick:
@@ -243,7 +271,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.mouse_x = event.pos().x()
                 self.mouse_y = self.openGLWidget.height() - event.pos().y()
                 self.doubleclick = True
-                print(self.mouse_x, self.mouse_y, self.doubleclick)
                 
         # left button down mouse drag
         if (event.type() == QtCore.QEvent.MouseMove and
@@ -302,7 +329,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.first = True
             QApplication.restoreOverrideCursor()
             
-        # real time mouse position
+        # real time mouse postion
         if event.type() == QtCore.QEvent.MouseMove:
             self.real_time_mouse_x = event.pos().x()
             self.real_time_mouse_y = self.openGLWidget.height() - event.pos().y()
