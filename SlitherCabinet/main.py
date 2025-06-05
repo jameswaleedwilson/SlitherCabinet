@@ -168,7 +168,7 @@ class MainApp(MainWindow):
                                      current_pixel_color=self.current_pixel_color)
 
         self.grid.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
-                                   object_color_identifier_default_fbo=(255, 0, 0),
+                                   object_color_identifier_default_fbo=(0, 0, 0),
                                    current_pixel_color=self.current_pixel_color)
 
         """ END DRAW TO DEFAULT FBO """

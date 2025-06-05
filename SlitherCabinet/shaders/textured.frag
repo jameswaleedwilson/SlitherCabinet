@@ -55,17 +55,17 @@ void main()
     frag_color += Create_Light(light_data[1].position, light_data[1].color, normal, frag_pos, view_dir);
     frag_color += Create_Light(light_data[2].position, light_data[2].color, normal, frag_pos, view_dir);
 
-    if(fbo_switcher == 0)
+    if (fbo_switcher == 0)
     {
-        if(object_color_identifier_default_fbo == current_pixel_color)
+        if (object_color_identifier_default_fbo == current_pixel_color && object_color_identifier_default_fbo != ivec3(0, 0, 0))
         {
             if (gl_FrontFacing)
             {
-                frag_color = frag_color * texture(tex_front, UV)  * highlight_colour;
+                frag_color = frag_color * texture(tex_front, UV) * highlight_colour;
             }
             else // Fragment is back facing fragment
             {
-                frag_color = frag_color * texture(tex_back, UV) *  highlight_colour;
+                frag_color = frag_color * texture(tex_back, UV) * highlight_colour;
             }
         }
         else
