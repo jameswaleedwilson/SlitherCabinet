@@ -1,4 +1,4 @@
-from addman.modules.LoadDefaultFBO import *
+from SlitherCabinet.modules.LoadDefaultFBO import LoadDefaultFBO
 
 
 class Cube(LoadDefaultFBO):

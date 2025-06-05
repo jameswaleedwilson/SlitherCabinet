@@ -1,14 +1,11 @@
 import pygame
 from .ShaderVectors import *
-from .LoadTexture import LoadTexture
 from .ShaderUniforms import *
 from .TransformationMatrices import *
 
 
 class LoadCustomFBO:
     def __init__(self, vertices,
-                 image_front=None,
-                 image_back=None,
                  vertex_normals=None,
                  vertex_uvs=None,
                  vertex_colors=None,

@@ -74,7 +74,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def camera_init(self):
         pass
 
-    def render_gl(self):
+    def paintGL(self):
         pass
 
     def minimize_function(self):

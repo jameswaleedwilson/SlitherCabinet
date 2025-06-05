@@ -1,17 +1,16 @@
 # Operating system
-import sys
+"""None"""
 # Python packages
 from PyQt5.QtCore import QTimer
 # Local modules
 from modules.animated_splash_screen import AnimatedSplashScreen
-from modules.Animate import Animate
 from modules.Camera import Camera
 from modules.CompileShader import *
 from modules.MainWindow import *
 from modules.Light import *
 from modules.LoadObject import *
 
-
+""" Main application inherits from MainWindow(QtWidgets.QMainWindow) """
 class MainApp(MainWindow):
 
     def __init__(self):
@@ -34,7 +33,7 @@ class MainApp(MainWindow):
         self.program_id = None
         self.lights = []
         self.window_settings_minimized = None
-        self.window_settings_maximized = QtCore.QSettings("AddMan", "maximized")
+        self.window_settings_maximized = QtCore.QSettings("Slither", "maximized")
 
         self.mouse_x = 0
         self.mouse_y = 0
@@ -49,20 +48,25 @@ class MainApp(MainWindow):
         self.toolButton_grid.setChecked(True)
         self.toolButton_CAD.setChecked(True)
 
+        # opengl gl loop 50 Hz
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.opengl_loop)
         self.timer.start(20)
 
     def setup_ui(self):
-        # get initial openGL widget size here
+        # Reimplement QOpenGLWidget virtual functions as subclasses to perform the typical OpenGL tasks
         self.openGLWidget.initializeGL = self.initialise_gl
-        self.openGLWidget.paintGL = self.render_gl
+        self.openGLWidget.paintGL = self.paint_gl
+        # a method used to define widget accepts keyboard focus
         self.openGLWidget.setFocusPolicy(Qt.StrongFocus)
+        # a function used to control whether mouse move events (specifically, mouseMoveEvent)
+        # are sent to a widget even when no mouse button is pressed
         self.openGLWidget.setMouseTracking(True)
-        # installEventFilter
+        # installEventFilter sends the events to the eventFilter
         self.openGLWidget.installEventFilter(self)
         # preset cursor to cross-hairs
         self.openGLWidget.setCursor(Qt.CrossCursor)
+
         self.label_roll.setText('Roll ' + str(self.roll))
         self.label_pitch.setText('Pitch ' + str(self.pitch))
         self.label_yaw.setText('Yaw ' + str(self.yaw))
@@ -87,6 +91,8 @@ class MainApp(MainWindow):
         window.close()
 
     def initialise_gl(self):
+        # query double buffering
+
         # enable depth testing
         glEnable(GL_DEPTH_TEST)
         # enable blending
@@ -143,7 +149,7 @@ class MainApp(MainWindow):
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         glBindTexture(GL_TEXTURE_2D, 0)
 
-    def render_gl(self):
+    def paint_gl(self):
 
         self.camera = Camera(self.openGLWidget.width(), self.openGLWidget.height())
 
@@ -152,34 +158,19 @@ class MainApp(MainWindow):
         glClearColor(*self.background_color)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-
-
-        if self.axes:
-            self.axes_center.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw,
-                                              self.view,
-                                              object_color_identifier_default_fbo=(1, 0, 0),
-                                              current_pixel_color=self.current_pixel_color)
-            self.axes_x.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw,
-                                         self.view,
-                                         object_color_identifier_default_fbo=(1, 0, 0),
-                                         current_pixel_color=self.current_pixel_color)
-            self.axes_y.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw,
-                                         self.view,
-                                         object_color_identifier_default_fbo=(1, 0, 0),
-                                         current_pixel_color=self.current_pixel_color)
-            self.axes_z.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw,
-                                         self.view,
-                                         object_color_identifier_default_fbo=(1, 0, 0),
-                                         current_pixel_color=self.current_pixel_color)
+        self.axes_center.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
+        self.axes_x.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
+        self.axes_y.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
+        self.axes_z.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         self.hemera.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
                                      object_color_identifier_default_fbo=(2, 255, 0),
                                      current_pixel_color=self.current_pixel_color)
 
-        if self.grid:
-            self.grid.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
-                                       object_color_identifier_default_fbo=(255, 0, 0),
-                                       current_pixel_color=self.current_pixel_color)
+        self.grid.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
+                                   object_color_identifier_default_fbo=(255, 0, 0),
+                                   current_pixel_color=self.current_pixel_color)
+
         """ END DRAW TO DEFAULT FBO """
 
         """ START DRAW TO CUSTOM FBO """
@@ -202,7 +193,7 @@ class MainApp(MainWindow):
         current_pixel_color = glReadPixels(self.real_time_mouse_x, self.real_time_mouse_y, 1, 1, GL_RGB,
                                            GL_UNSIGNED_BYTE)
         self.current_pixel_color = (current_pixel_color[0], current_pixel_color[1], current_pixel_color[2])
-        # print(self.current_pixel_color)
+        print(self.current_pixel_color)
         # unbind Custom FBO
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         """ END READ PIXELS """
@@ -214,6 +205,9 @@ class MainApp(MainWindow):
         self.label_zoom.setText('Zoom ' + str(round(self.zoom, 1)))
 
     def opengl_loop(self):
+        # This function does not cause an immediate repaint; instead it schedules a paint event for
+        # processing when Qt returns to the main event loop. This permits Qt to optimize for more
+        # speed and less flicker than a call to repaint() does.
         self.openGLWidget.update()
 
 
@@ -225,9 +219,9 @@ def execute_functions():
     animated_splash_screen.finish(window)
 
 
-"""Run Main App"""
+""" Run Main App """
 if __name__ == '__main__':
-    app = QApplication(sys.argv + ['-platform', 'windows:darkmode=2'])
+    app = QApplication([])
 
     # Initialise AnimatedSplashScreen()
     animated_splash_screen = AnimatedSplashScreen()
@@ -241,7 +235,7 @@ if __name__ == '__main__':
     # 2.Close AnimatedSplashScreen() and open MainWindow()
     timer = QTimer()
     timer.timeout.connect(execute_functions)
-    timer.start(11546)
+    timer.start(1546)
 
     # window.show()
     app.exec()
