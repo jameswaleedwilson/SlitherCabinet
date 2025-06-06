@@ -1,0 +1,7 @@
+Created = None
+Date = None
+Job Number = None
+Quote Number = None
+Invoice Number = None
+Objects Start:
+ID = 1, Object = Box, [mesh = cube.obj, location = (300, 150,0)]

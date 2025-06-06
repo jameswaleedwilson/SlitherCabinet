@@ -1,15 +1,15 @@
 # Operating system
 """None"""
 # Python packages
-from PyQt5.QtCore import QTimer
+"""None"""
 # Local modules
 from modules.animated_splash_screen import AnimatedSplashScreen
 from modules.Camera import Camera
 from modules.CompileShader import *
 from modules.MainWindow import *
 from modules.Light import *
-from modules.LoadObject import *
-
+from modules.LoadVBO import *
+gl_loop = 0
 """ Main application inherits from MainWindow(QtWidgets.QMainWindow) """
 class MainApp(MainWindow):
 
@@ -19,7 +19,7 @@ class MainApp(MainWindow):
         self.depth_texture = None
         self.hemera = None
         self.switcher_loc = None
-        self.FBO = None
+        self.FBO1 = None
         self.pick_texture = None
         self.shader_textured = None
         self.current_pixel_color = None
@@ -53,6 +53,9 @@ class MainApp(MainWindow):
         self.timer.timeout.connect(self.opengl_loop)
         self.timer.start(20)
 
+
+        self.test_draw = 0
+
     def setup_ui(self):
         # Reimplement QOpenGLWidget virtual functions as subclasses to perform the typical OpenGL tasks
         self.openGLWidget.initializeGL = self.initialise_gl
@@ -79,7 +82,7 @@ class MainApp(MainWindow):
         window.showMinimized()
 
     def maximize_function(self):
-        if self.windowState() & QtCore.Qt.WindowMaximized:
+        if self.windowState() & QtCore.Qt.WindowState.WindowMaximized:
             self.restoreGeometry(self.window_settings_maximized.value("geometry"))
             self.restoreState(self.window_settings_maximized.value("windowState"))
         else:
@@ -102,30 +105,31 @@ class MainApp(MainWindow):
         self.shader_textured = CompileShader("shaders/textured.vert", "shaders/textured.frag")
         # animation
         #self.animation = Animate()
-        # initialise objects
-        self.axes_center = LoadObject("meshesOBJ/axes_center.obj", "textures/yellow.png",
-                                      shader=self.shader_textured)
-        self.axes_x = LoadObject("meshesOBJ/axes_x.obj", "textures/red.png",
-                                 shader=self.shader_textured)
-        self.axes_y = LoadObject("meshesOBJ/axes_y.obj", "textures/green.png",
-                                 shader=self.shader_textured)
-        self.axes_z = LoadObject("meshesOBJ/axes_z.obj", "textures/blue.png",
-                                 shader=self.shader_textured)
-        self.grid = LoadObject("meshesOBJ/plate.obj", "textures/grid_solid_bg.png",
-                               location=pygame.Vector3(0, 0, -0.01),
-                               image_back="textures/grid_transparent_bg.png",
-                               shader=self.shader_textured)
-        self.hemera = LoadObject("meshesOBJ/hemera.obj", "textures/dark_grey.png",
-                                 location=pygame.Vector3(0, 0, 0),
-                                 shader=self.shader_textured)
+        # initialise app objects
+        self.axes_center = LoadVBO("meshesOBJ/axes_center.obj", "textures/yellow.png",
+                                   shader=self.shader_textured)
+        self.axes_x = LoadVBO("meshesOBJ/axes_x.obj", "textures/red.png",
+                              shader=self.shader_textured)
+        self.axes_y = LoadVBO("meshesOBJ/axes_y.obj", "textures/green.png",
+                              shader=self.shader_textured)
+        self.axes_z = LoadVBO("meshesOBJ/axes_z.obj", "textures/blue.png",
+                              shader=self.shader_textured)
+        self.grid = LoadVBO("meshesOBJ/plate.obj", "textures/grid_solid_bg.png",
+                            image_back="textures/grid_transparent_bg.png",
+                            shader=self.shader_textured)
+        # initialise user objects
+        self.hemera = LoadVBO("meshesOBJ/cube.obj", "textures/dark_grey.png",
+                              shader=self.shader_textured,
+                              location=pygame.Vector3(300, 150, 0),
+                              identifier=(1, 255, 0))
 
         # initialise lights
         self.lights.append(Light(pygame.Vector3(-300, -150, 1000), pygame.Vector3(1, 1, 1), 0,
                                  move_with_camera=True))
 
-        # Create the Custom FBO
-        self.FBO = glGenFramebuffers(1)
-        glBindFramebuffer(GL_FRAMEBUFFER, self.FBO)
+        # Create the Custom FBO #1
+        self.FBO1 = glGenFramebuffers(1)
+        glBindFramebuffer(GL_FRAMEBUFFER, self.FBO1)
 
         # Create picking texture and a frame buffer object
         self.pick_texture = glGenTextures(1)
@@ -143,14 +147,16 @@ class MainApp(MainWindow):
         # Verify that the FBO is correct
         status = glCheckFramebufferStatus(GL_FRAMEBUFFER)
         if status != GL_FRAMEBUFFER_COMPLETE:
-            print("FB error, status: ", status)
+            print("Frame Buffer error, status: ", status)
             exit(1)
         # Restore the default frame buffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         glBindTexture(GL_TEXTURE_2D, 0)
 
     def paint_gl(self):
-
+        global gl_loop
+        gl_loop += 1
+        print(gl_loop)
         self.camera = Camera(self.openGLWidget.width(), self.openGLWidget.height())
 
         """ START DRAW TO DEFAULT FBO """
@@ -164,24 +170,26 @@ class MainApp(MainWindow):
         self.axes_z.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         self.hemera.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
-                                     object_color_identifier_default_fbo=(2, 255, 0),
                                      current_pixel_color=self.current_pixel_color)
+        if 100 < gl_loop < 150:
+            self.hemera2.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
+                                         current_pixel_color=self.current_pixel_color)
 
-        self.grid.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
-                                   object_color_identifier_default_fbo=(0, 0, 0),
-                                   current_pixel_color=self.current_pixel_color)
+        self.grid.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         """ END DRAW TO DEFAULT FBO """
 
         """ START DRAW TO CUSTOM FBO """
         # bind Custom FBO -> comment out below line to view the Custom FBO
-        glBindFramebuffer(GL_FRAMEBUFFER, self.FBO)
+        glBindFramebuffer(GL_FRAMEBUFFER, self.FBO1)
         # set custom background color to black
         glClearColor(0.0, 0.0, 0.0, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        self.hemera.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view,
-                                    object_color_identifier_custom_fbo=(2, 255, 0))
+        self.hemera.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
+
+        if 100 < gl_loop < 150:
+            self.hemera2.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         # Unbind Custom FBO
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
@@ -189,11 +197,11 @@ class MainApp(MainWindow):
 
         """ START READ PIXELS """
         # bind Custom FBO
-        glBindFramebuffer(GL_FRAMEBUFFER, self.FBO)
+        glBindFramebuffer(GL_FRAMEBUFFER, self.FBO1)
         current_pixel_color = glReadPixels(self.real_time_mouse_x, self.real_time_mouse_y, 1, 1, GL_RGB,
                                            GL_UNSIGNED_BYTE)
         self.current_pixel_color = (current_pixel_color[0], current_pixel_color[1], current_pixel_color[2])
-        print(self.current_pixel_color)
+        #print(self.current_pixel_color)
         # unbind Custom FBO
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         """ END READ PIXELS """
@@ -203,6 +211,12 @@ class MainApp(MainWindow):
         self.label_pitch.setText('Pitch ' + str(self.pitch))
         self.label_yaw.setText('Yaw ' + str(self.yaw))
         self.label_zoom.setText('Zoom ' + str(round(self.zoom, 1)))
+
+        # initialise new user objects
+        self.hemera2 = LoadVBO("meshesOBJ/cube.obj", "textures/dark_grey.png",
+                              shader=self.shader_textured,
+                              location=pygame.Vector3(30, 15, 0),
+                              identifier=(2, 255, 0))
 
     def opengl_loop(self):
         # This function does not cause an immediate repaint; instead it schedules a paint event for
@@ -233,7 +247,7 @@ if __name__ == '__main__':
     window.setup_ui()
 
     # 2.Close AnimatedSplashScreen() and open MainWindow()
-    timer = QTimer()
+    timer = QtCore.QTimer()
     timer.timeout.connect(execute_functions)
     timer.start(1546)
 

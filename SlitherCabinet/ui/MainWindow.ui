@@ -362,7 +362,7 @@ QToolButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>ENVIRONMENT</string>
+              <string>Job Details</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -767,7 +767,7 @@ QToolButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>DRAFTING</string>
+              <string>XERO</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>

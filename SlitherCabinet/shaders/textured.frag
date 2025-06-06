@@ -10,8 +10,7 @@ uniform sampler2D tex_front;
 uniform sampler2D tex_back;
 
 uniform int fbo_switcher;
-uniform ivec3 object_color_identifier_default_fbo;
-uniform ivec3 object_color_identifier_custom_fbo;
+uniform ivec3 identifier;
 uniform ivec3 current_pixel_color;
 uniform ivec4 highlight_colour = ivec4(1, 0, 0, 1);
 
@@ -55,9 +54,10 @@ void main()
     frag_color += Create_Light(light_data[1].position, light_data[1].color, normal, frag_pos, view_dir);
     frag_color += Create_Light(light_data[2].position, light_data[2].color, normal, frag_pos, view_dir);
 
+    // Draw to screen default FBO #0
     if (fbo_switcher == 0)
     {
-        if (object_color_identifier_default_fbo == current_pixel_color && object_color_identifier_default_fbo != ivec3(0, 0, 0))
+        if (identifier == current_pixel_color && identifier != ivec3(0, 0, 0))
         {
             if (gl_FrontFacing)
             {
@@ -82,9 +82,10 @@ void main()
     }
     else
     {
-        frag_color = vec4(object_color_identifier_custom_fbo[0] / 255.0,
-                          object_color_identifier_custom_fbo[1] / 255.0,
-                          object_color_identifier_custom_fbo[2] / 255.0,
-                                                                    1.0);
+        // Pixel Picking custom FBO #1
+        frag_color = vec4(identifier[0] / 255.0,
+                          identifier[1] / 255.0,
+                          identifier[2] / 255.0,
+                                            1.0);
     }
 }
