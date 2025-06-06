@@ -215,7 +215,7 @@ class MainApp(MainWindow):
 
         # initialise new user objects
         global load_once
-        if load_once:
+        if gl_loop < 10 and load_once:
             self.hemera2 = LoadVBO("meshesOBJ/hemera.obj", "textures/dark_grey.png",
                                   shader=self.shader_textured,
                                   location=pygame.Vector3(100, 150, 0),
@@ -232,7 +232,7 @@ class MainApp(MainWindow):
 """1.Close AnimatedSplashScreen() and open MainWindow()"""
 
 
-def execute_functions():
+def switch_screens():
     window.show()
     animated_splash_screen.finish(window)
 
@@ -252,7 +252,7 @@ if __name__ == '__main__':
 
     # 2.Close AnimatedSplashScreen() and open MainWindow()
     timer = QtCore.QTimer()
-    timer.timeout.connect(execute_functions)
+    timer.timeout.connect(switch_screens)
     timer.start(1546)
 
     # window.show()
