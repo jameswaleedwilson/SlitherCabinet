@@ -10,6 +10,7 @@ from modules.MainWindow import *
 from modules.Light import *
 from modules.LoadVBO import *
 gl_loop = 0
+load_once = True
 """ Main application inherits from MainWindow(QtWidgets.QMainWindow) """
 class MainApp(MainWindow):
 
@@ -213,10 +214,13 @@ class MainApp(MainWindow):
         self.label_zoom.setText('Zoom ' + str(round(self.zoom, 1)))
 
         # initialise new user objects
-        self.hemera2 = LoadVBO("meshesOBJ/cube.obj", "textures/dark_grey.png",
-                              shader=self.shader_textured,
-                              location=pygame.Vector3(30, 15, 0),
-                              identifier=(2, 255, 0))
+        global load_once
+        if load_once:
+            self.hemera2 = LoadVBO("meshesOBJ/hemera.obj", "textures/dark_grey.png",
+                                  shader=self.shader_textured,
+                                  location=pygame.Vector3(100, 150, 0),
+                                  identifier=(2, 255, 0))
+            load_once = False
 
     def opengl_loop(self):
         # This function does not cause an immediate repaint; instead it schedules a paint event for
