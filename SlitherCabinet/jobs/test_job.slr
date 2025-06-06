@@ -1,7 +1,10 @@
-Created = None
-Date = None
-Job Number = None
-Quote Number = None
-Invoice Number = None
-Objects Start:
+Created = [Slither Slicer, John Doe, 4.00pm, 2025/12/30]
+Job Number = None # Cannot Start without one -> this will form (name).slr
+Client Details = [Name, address, phone, email]
+Quote Number = None # Not Yet Quoted
+Invoice Number = None # Not yet Invoiced
+!!!Objects Start:
+obj = [[cube.obj, grey.png], [sphere.obj, grey.png]]
 ID = 1, Object = Box, [mesh = cube.obj, location = (300, 150,0)]
+ID = 2, Object = Sphere, [mesh = sphere.obj, location = (200, 150,0)]
+ID = 3, Object = Box, [mesh = cube.obj, location = (100, 150,0)]
