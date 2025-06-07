@@ -9,13 +9,18 @@ from modules.compile_shader import *
 from modules.main_window import *
 from modules.light import *
 from modules.LoadVBO import *
+from app_data.mesh_data import mesh_data
+
 gl_loop = 0
 load_once = True
+
+
 """ Main application inherits from MainWindow(QtWidgets.QMainWindow) """
 class MainApp(MainWindow):
 
     def __init__(self):
         super().__init__()
+        self.default_meshes = None
         self.animation = None
         self.depth_texture = None
         self.hemera = None
@@ -26,10 +31,6 @@ class MainApp(MainWindow):
         self.current_pixel_color = None
         self.current_pixel = None
         self.clip_plane = None
-        self.axes_x = None
-        self.axes_y = None
-        self.axes_z = None
-        self.axes_center = None
         self.camera = None
         self.program_id = None
         self.lights = []
@@ -53,7 +54,6 @@ class MainApp(MainWindow):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.opengl_loop)
         self.timer.start(20)
-
 
         self.test_draw = 0
 
@@ -106,18 +106,19 @@ class MainApp(MainWindow):
         self.shader_textured = CompileShader("shaders/textured.vert", "shaders/textured.frag")
         # animation
         #self.animation = Animate()
-        # initialise app objects
-        self.axes_center = LoadVBO("meshesOBJ/axes_center.obj", "textures/yellow.png",
-                                   shader=self.shader_textured)
-        self.axes_x = LoadVBO("meshesOBJ/axes_x.obj", "textures/red.png",
-                              shader=self.shader_textured)
-        self.axes_y = LoadVBO("meshesOBJ/axes_y.obj", "textures/green.png",
-                              shader=self.shader_textured)
-        self.axes_z = LoadVBO("meshesOBJ/axes_z.obj", "textures/blue.png",
-                              shader=self.shader_textured)
-        self.grid = LoadVBO("meshesOBJ/plate.obj", "textures/grid_solid_bg.png",
-                            image_back="textures/grid_transparent_bg.png",
-                            shader=self.shader_textured)
+
+        """ initialise app objects """
+        # List to store created objects
+        self.default_meshes = []
+
+        # Loop to create and store objects
+        for mesh in mesh_data:
+            obj = LoadVBO(mesh["mesh"],
+                          mesh["texture_front"],
+                          image_back=mesh["texture_back"],
+                          shader=self.shader_textured)
+            self.default_meshes.append(obj)
+
         # initialise user objects
         self.hemera = LoadVBO("meshesOBJ/cube.obj", "textures/dark_grey.png",
                               shader=self.shader_textured,
@@ -165,18 +166,13 @@ class MainApp(MainWindow):
         glClearColor(*self.background_color)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        self.axes_center.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
-        self.axes_x.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
-        self.axes_y.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
-        self.axes_z.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
-
         self.hemera.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
                                      current_pixel_color=self.current_pixel_color)
         if 100 < gl_loop < 250:
             self.hemera2.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
                                          current_pixel_color=self.current_pixel_color)
-
-        self.grid.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
+        for obj in self.default_meshes:
+            obj.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         """ END DRAW TO DEFAULT FBO """
 
@@ -230,8 +226,6 @@ class MainApp(MainWindow):
 
 
 """1.Close AnimatedSplashScreen() and open MainWindow()"""
-
-
 def switch_screens():
     window.show()
     animated_splash_screen.finish(window)

@@ -1,0 +1,9 @@
+axes_center, axes_center.obj, yellow.png, none,
+
+axes_x, axes_x.obj, red.png, none,
+
+axes_y, axes_y.obj, green.png, none,
+
+axes_z, axes_z.obj, blue.png, none,
+
+grid, plate.obj, grid_solid_bg.png, grid_transparent_bg.png
