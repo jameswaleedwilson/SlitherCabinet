@@ -1,14 +1,11 @@
 import pygame
-from .ShaderVectors import *
-from .LoadTexture import LoadTexture
-from .ShaderUniforms import *
-from .TransformationMatrices import *
+from .shader_vectors import *
+from .shader_uniforms import *
+from .transformation_matrices import *
 
 
-class LoadDefaultVAO:
+class LoadCustomVAO:
     def __init__(self, vertices,
-                 image_front=None,
-                 image_back=None,
                  vertex_normals=None,
                  vertex_uvs=None,
                  vertex_colors=None,
@@ -39,10 +36,10 @@ class LoadDefaultVAO:
         if self.vertices is not None:
             vertices = ShaderVectors("vec3", self.vertices)
             vertices.find_variable(self.shader.link_shader, "vertices")
-
+        """
         if self.vertex_colors is not None:
             vertex_colors = ShaderVectors("vec3", self.vertex_colors)
-            vertex_colors.find_variable(self.shader.link_shader, "vertex_color")
+            vertex_colors.find_variable(self.shader.link_shader, "vertex_color")"""
 
         if self.vertex_normals is not None:
             vertex_normals = ShaderVectors("vec3", self.vertex_normals)
@@ -62,29 +59,13 @@ class LoadDefaultVAO:
         self.move_translate = move_translate
         self.move_scale = move_scale
 
-        self.texture_front = None
-        if image_front is not None:
-            self.image = LoadTexture(image_front)
-            self.texture_front = ShaderUniforms("sampler2D", [self.image.id, 1])
-
-        self.texture_back = None
-        if image_back is not None:
-            self.image = LoadTexture(image_back)
-            self.texture_back = ShaderUniforms("sampler2D", [self.image.id, 2])
-        else:
-            # If none default to front -> if glEnable(GL_CULL_FACE) then none
-            self.image = LoadTexture(image_front)
-            self.texture_back = ShaderUniforms("sampler2D", [self.image.id, 2])
-
-    def draw_default_fbo(self, camera, lights, zoom, roll, pitch, yaw, view,
-                         current_pixel_color=None,
-                         clip_z=None,
-                         new_location=None):
+    def draw_custom_fbo(self, camera, zoom, roll, pitch, yaw, view,
+                        clip_z=None):
 
         self.shader.use()
 
         # switcher '0' draws to the DEFAULT FBO - (frame buffer object)
-        fbo_switcher = ShaderUniforms("int1", 0)
+        fbo_switcher = ShaderUniforms("int1", 1)
         fbo_switcher.find_variable(self.shader.link_shader, "fbo_switcher")
         fbo_switcher.load()
 
@@ -92,31 +73,16 @@ class LoadDefaultVAO:
         if self.identifier is not None:
             identifier = self.identifier
             identifier = ShaderUniforms("ivec3", identifier)
-            identifier.find_variable(self.shader.link_shader,"identifier")
+            identifier.find_variable(self.shader.link_shader, "identifier")
             identifier.load()
-
+        """
         # current selected read pixel
         if current_pixel_color is not None:
             current_pixel_color = ShaderUniforms("ivec3", current_pixel_color)
             current_pixel_color.find_variable(self.shader.link_shader, "current_pixel_color")
-            current_pixel_color.load()
+            current_pixel_color.load()"""
 
-        if new_location is not None:
-            self.move_translate = new_location
-
-        view_mat = camera.update(self.shader.link_shader, zoom, roll, pitch, yaw, view)
-
-        if lights is not None:
-            for light in lights:
-                light.update(self.shader.link_shader, view_mat)
-
-        if self.texture_front is not None:
-            self.texture_front.find_variable(self.shader.link_shader, "tex_front")
-            self.texture_front.load()
-
-        if self.texture_back is not None:
-            self.texture_back.find_variable(self.shader.link_shader, "tex_back")
-            self.texture_back.load()
+        camera.update(self.shader.link_shader, zoom, roll, pitch, yaw, view)
 
         if clip_z is not None:
             clip_plane = ShaderUniforms("vec4", (0.0, 0.0, -1.0, clip_z))

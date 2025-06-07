@@ -1,6 +1,6 @@
 import pygame
-from .TransformationMatrices import *
-from .ShaderUniforms import *
+from .transformation_matrices import *
+from .shader_uniforms import *
 
 
 class Light:

@@ -1,5 +1,5 @@
-from .LoadDefaultVAO import *
-from .LoadCustomVAO import *
+from .load_default_vao import *
+from .load_custom_vao import *
 import pygame
 from .utilities import *
 

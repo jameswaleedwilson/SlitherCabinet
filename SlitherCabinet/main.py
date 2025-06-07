@@ -4,10 +4,10 @@
 """None"""
 # Local modules
 from modules.animated_splash_screen import AnimatedSplashScreen
-from modules.Camera import Camera
-from modules.CompileShader import *
-from modules.MainWindow import *
-from modules.Light import *
+from modules.camera import Camera
+from modules.compile_shader import *
+from modules.main_window import *
+from modules.light import *
 from modules.LoadVBO import *
 gl_loop = 0
 load_once = True
@@ -172,7 +172,7 @@ class MainApp(MainWindow):
 
         self.hemera.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
                                      current_pixel_color=self.current_pixel_color)
-        if 100 < gl_loop < 150:
+        if 100 < gl_loop < 250:
             self.hemera2.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
                                          current_pixel_color=self.current_pixel_color)
 
@@ -189,7 +189,7 @@ class MainApp(MainWindow):
 
         self.hemera.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
-        if 100 < gl_loop < 150:
+        if 100 < gl_loop < 250:
             self.hemera2.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         # Unbind Custom FBO
