@@ -225,7 +225,7 @@ class MainApp(MainWindow):
 
 """1.Close AnimatedSplashScreen() and open MainWindow()"""
 def switch_screens():
-    window.show()
+    window.showMaximized()
     animated_splash_screen.finish(window)
 
 
