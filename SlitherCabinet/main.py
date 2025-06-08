@@ -9,7 +9,8 @@ from modules.compile_shader import *
 from modules.main_window import *
 from modules.light import *
 from modules.LoadVBO import *
-from app_data.mesh_data import mesh_data
+from data_app.mesh_data_app import mesh_data_app
+from data_user.mesh_data_user import mesh_data_user
 
 gl_loop = 0
 load_once = True
@@ -20,10 +21,13 @@ class MainApp(MainWindow):
 
     def __init__(self):
         super().__init__()
-        self.default_meshes = None
+
+        self.meshes_app = []
+        self.meshes_user = []
+        self.job_loaded = True
+
         self.animation = None
         self.depth_texture = None
-        self.hemera = None
         self.switcher_loc = None
         self.FBO1 = None
         self.pick_texture = None
@@ -43,7 +47,7 @@ class MainApp(MainWindow):
         self.real_time_mouse_y = 0
 
         # initial values/settings
-        self.zoom = 50
+        self.zoom = 200
         self.background_color = (45.0 / 255.0, 45.0 / 255.0, 45.0 / 255.0, 1.0)
         self.verticalSlider_glClipPlane.setValue(300)
         self.toolButton_axes.setChecked(True)
@@ -108,22 +112,13 @@ class MainApp(MainWindow):
         #self.animation = Animate()
 
         """ initialise app objects """
-        # List to store created objects
-        self.default_meshes = []
-
         # Loop to create and store objects
-        for mesh in mesh_data:
+        for mesh in mesh_data_app:
             obj = LoadVBO(mesh["mesh"],
                           mesh["texture_front"],
                           image_back=mesh["texture_back"],
                           shader=self.shader_textured)
-            self.default_meshes.append(obj)
-
-        # initialise user objects
-        self.hemera = LoadVBO("meshesOBJ/cube.obj", "textures/dark_grey.png",
-                              shader=self.shader_textured,
-                              location=pygame.Vector3(300, 150, 0),
-                              identifier=(1, 255, 0))
+            self.meshes_app.append(obj)
 
         # initialise lights
         self.lights.append(Light(pygame.Vector3(-300, -150, 1000), pygame.Vector3(1, 1, 1), 0,
@@ -166,12 +161,12 @@ class MainApp(MainWindow):
         glClearColor(*self.background_color)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        self.hemera.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
+        if gl_loop > 100:
+            for obj in self.meshes_user:
+                obj.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
                                      current_pixel_color=self.current_pixel_color)
-        if 100 < gl_loop < 250:
-            self.hemera2.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view,
-                                         current_pixel_color=self.current_pixel_color)
-        for obj in self.default_meshes:
+
+        for obj in self.meshes_app:
             obj.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         """ END DRAW TO DEFAULT FBO """
@@ -183,10 +178,9 @@ class MainApp(MainWindow):
         glClearColor(0.0, 0.0, 0.0, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        self.hemera.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
-
-        if 100 < gl_loop < 250:
-            self.hemera2.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
+        if gl_loop > 100:
+            for obj in self.meshes_user:
+                obj.draw_custom_fbo(self.camera, self.zoom, self.roll, self.pitch, self.yaw, self.view)
 
         # Unbind Custom FBO
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
@@ -212,10 +206,14 @@ class MainApp(MainWindow):
         # initialise new user objects
         global load_once
         if gl_loop < 10 and load_once:
-            self.hemera2 = LoadVBO("meshesOBJ/hemera.obj", "textures/dark_grey.png",
-                                  shader=self.shader_textured,
-                                  location=pygame.Vector3(100, 150, 0),
-                                  identifier=(2, 255, 0))
+            for mesh in mesh_data_user:
+                obj = LoadVBO(mesh["mesh"],
+                              mesh["texture_front"],
+                              shader=self.shader_textured,
+                              identifier=mesh["identifier"],
+                              location=pygame.Vector3(mesh["location"][0], mesh["location"][1], mesh["location"][2]),
+                              move_scale=pygame.Vector3(mesh["scale"][0], mesh["scale"][1], mesh["scale"][2]))
+                self.meshes_user.append(obj)
             load_once = False
 
     def opengl_loop(self):
