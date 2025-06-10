@@ -1,6 +1,5 @@
 # Blender 3.6.1
 # www.blender.org
-mtllib axes_center.mtl
 o Sphere
 v 0.000000 1.111140 1.662939
 v 0.000000 1.662939 1.111140

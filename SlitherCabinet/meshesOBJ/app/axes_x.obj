@@ -1,6 +1,5 @@
 # Blender 3.6.1
 # www.blender.org
-mtllib axes_x.mtl
 o Cylinder
 v 0.000000 1.000000 0.000013
 v 600.000000 1.000000 -0.000013

@@ -4,6 +4,7 @@ in vec3 vertices;
 in vec3 vertex_color;
 in vec3 vertex_normal;
 in vec2 vertex_uv;
+in vec2 vertex_texture;
 
 uniform mat4 projection_mat;
 uniform mat4 model_mat;
@@ -14,6 +15,7 @@ out vec3 normal;
 out vec3 frag_pos;
 out vec3 view_pos;
 out vec2 UV;
+out vec2 text;
 
 void main()
 {
@@ -26,4 +28,6 @@ void main()
     frag_pos = vec3(model_mat * vec4(vertices,1));
     color = vertex_color;
     UV = vertex_uv;
+    text = vertex_texture;
+
 }

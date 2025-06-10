@@ -153,7 +153,7 @@ class MainApp(MainWindow):
     def paint_gl(self):
         global gl_loop
         gl_loop += 1
-        print(gl_loop)
+        #print(gl_loop)
         self.camera = Camera(self.openGLWidget.width(), self.openGLWidget.height())
 
         """ START DRAW TO DEFAULT FBO """
@@ -212,7 +212,7 @@ class MainApp(MainWindow):
                               shader=self.shader_textured,
                               identifier=mesh["identifier"],
                               location=pygame.Vector3(mesh["location"][0], mesh["location"][1], mesh["location"][2]),
-                              move_scale=pygame.Vector3(mesh["scale"][0], mesh["scale"][1], mesh["scale"][2]))
+                              std_scale=pygame.Vector3(mesh["scale"][0], mesh["scale"][1], mesh["scale"][2]))
                 self.meshes_user.append(obj)
             load_once = False
 

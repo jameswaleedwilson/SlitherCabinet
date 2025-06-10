@@ -1,6 +1,5 @@
 # Blender 3.6.1
 # www.blender.org
-mtllib plate.mtl
 o Plane
 v 0.000000 0.000000 0.000000
 v 600.000000 0.000000 0.000000

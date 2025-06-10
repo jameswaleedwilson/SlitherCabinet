@@ -7,28 +7,37 @@ from .transformation_matrices import *
 
 class LoadDefaultVAO:
     def __init__(self, vertices,
+                 # manually assigned texture if not using mtl
                  image_front=None,
                  image_back=None,
+                 #vertex specific data
                  vertex_normals=None,
                  vertex_uvs=None,
                  vertex_colors=None,
+                 vertex_textures=None,
                  draw_type=GL_TRIANGLES,
+                 # static
                  translation=pygame.Vector3(0.0, 0.0, 0.0),
                  rotation=TransformationMatrices(0, pygame.Vector3(0, 1, 0)),
                  std_scale=pygame.Vector3(1, 1, 1),
+                 # dynamic
                  move_rotation=TransformationMatrices(0, pygame.Vector3(0, 1, 0)),
                  move_translate=pygame.Vector3(0, 0, 0),
                  move_scale=pygame.Vector3(1, 1, 1),
+                 # shader
                  shader=None,
+                 # pixel picking rgb identifier
                  identifier=None):
+
         self.shader = shader
         self.vertices = vertices
         self.vertex_normals = vertex_normals
         self.vertex_colors = vertex_colors
         self.vertex_uvs = vertex_uvs
         self.draw_type = draw_type
-        self.background_color = (45.0 / 255.0, 45.0 / 255.0, 45.0 / 255.0, 1.0)
+        #self.background_color = (45.0 / 255.0, 45.0 / 255.0, 45.0 / 255.0, 1.0)
         self.identifier = identifier
+        self.vertex_textures = vertex_textures
 
         # CREATE VAO
         # A Vertex Array Object (VAO) is an object which contains one or more Vertex Buffer Objects
@@ -52,6 +61,10 @@ class LoadDefaultVAO:
             vertex_uvs = ShaderVectors("vec2", self.vertex_uvs)
             vertex_uvs.find_variable(self.shader.link_shader, "vertex_uv")
 
+        if self.vertex_textures is not None:
+            vertex_textures = ShaderVectors("vec2", self.vertex_textures)
+            vertex_textures.find_variable(self.shader.link_shader, "vertex_texture")
+
         # do not change order
         self.model_mat = identity_mat()
         self.model_mat = rotate_a(self.model_mat, rotation.angle, rotation.axis)
@@ -70,10 +83,6 @@ class LoadDefaultVAO:
         self.texture_back = None
         if image_back is not None:
             self.image = LoadTexture(image_back)
-            self.texture_back = ShaderUniforms("sampler2D", [self.image.id, 2])
-        else:
-            # If none default to front -> if glEnable(GL_CULL_FACE) then none
-            self.image = LoadTexture(image_front)
             self.texture_back = ShaderUniforms("sampler2D", [self.image.id, 2])
 
     def draw_default_fbo(self, camera, lights, zoom, roll, pitch, yaw, view,

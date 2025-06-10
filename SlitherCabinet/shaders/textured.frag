@@ -5,6 +5,7 @@ in vec3 normal;
 in vec3 frag_pos;
 in vec3 view_pos;
 in vec2 UV;
+in vec2 text;
 
 uniform sampler2D tex_front;
 uniform sampler2D tex_back;
@@ -61,22 +62,30 @@ void main()
         {
             if (gl_FrontFacing)
             {
-                frag_color = frag_color * texture(tex_front, UV) * highlight_colour;
+                frag_color = frag_color * highlight_colour;
             }
             else // Fragment is back facing fragment
             {
-                frag_color = frag_color * texture(tex_back, UV) * highlight_colour;
+                frag_color = frag_color * highlight_colour;
             }
         }
         else
         {
             if (gl_FrontFacing)
             {
-                frag_color = frag_color * texture(tex_front, UV);
+                if (text[0] == 1)
+                {
+                    frag_color = frag_color * texture(tex_front, UV);
+                }
+
             }
             else // Fragment is back facing fragment
             {
-                frag_color = frag_color * texture(tex_back, UV);
+                if (text[1] == 2)
+                {
+                    frag_color = frag_color * texture(tex_back, UV);
+                }
+
             }
         }
     }

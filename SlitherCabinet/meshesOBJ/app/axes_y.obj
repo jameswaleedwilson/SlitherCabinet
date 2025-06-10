@@ -1,6 +1,5 @@
 # Blender 3.6.1
 # www.blender.org
-mtllib axes_y.mtl
 o Cylinder.001
 v 0.000000 300.000000 1.000007
 v 0.000000 0.000000 0.999993
