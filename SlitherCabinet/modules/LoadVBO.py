@@ -1,12 +1,18 @@
+# Operating system
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+# Python packages
+"""None"""
+# Local modules
 from .load_default_vao import *
 from .load_custom_vao import *
-import pygame
 from .utilities import *
 
 
 # need error checking
 class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
-    def __init__(self, obj_filename, image_front,
+    def __init__(self, obj_filename,
+                 image_front=None,
                  draw_type=GL_TRIANGLES,
                  # local once off change
                  location=pygame.Vector3(0, 0, 0),
@@ -22,22 +28,33 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                  identifier=(0, 0, 0)):
 
         # change the above to pass colour through
-        coordinates, triangles, uvs, uvs_ind, normals, normal_ind, texture_1, texture_2 = self.load_mesh(obj_filename, image_front, image_back)
+        (coordinates,
+         triangles,
+         uvs,
+         uvs_ind,
+         normals,
+         normal_ind,
+         image_front_id,
+         image_back_id,
+         image_front_array,
+         image_back) = self.load_mesh(obj_filename, image_front, image_back)
+
         vertices = format_vertices(coordinates, triangles)
         vertex_normals = format_vertices(normals, normal_ind)
         vertex_uvs = format_vertices(uvs, uvs_ind)
-        textures = np.stack((texture_1, texture_2), axis=1)
-        texture = []
+        image_ids = np.stack((image_front_id, image_back_id), axis=1)
+
+        # default color if no texture or color is given
+        default_color = []
         for i in range(len(vertices)):
-            texture.append(1)
-            texture.append(1)
-            texture.append(1)
+            default_color.append(1)
+            default_color.append(1)
+            default_color.append(1)
+
         super().__init__(vertices,
-                         image_front=image_front,
-                         image_back=image_back,
                          vertex_normals=vertex_normals,
                          vertex_uvs=vertex_uvs,
-                         vertex_colors=texture,
+                         vertex_colors=default_color,
                          draw_type=draw_type,
                          translation=location,
                          rotation=rotation,
@@ -47,29 +64,34 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                          move_scale=move_scale,
                          shader=shader,
                          identifier=identifier,
-                         vertex_textures=textures)
+                         image_ids=image_ids,
+                         image_front_array=image_front_array,
+                         image_back=image_back)
 
     @staticmethod
     def load_mesh(filename, image_front, image_back):
         vertices = []
         triangles = []
         normals = []
+        # normal_indices
         normal_ind = []
         uvs = []
+        # uvs_indices
         uvs_ind = []
-        # https://www.khronos.org/opengl/wiki/Array_Texture upgrade multiple textures to arrays
+        # https://www.khronos.org/opengl/wiki/Array_Texture upgrade multiple textures to arrays ????
         material_library = None
-        current_material = 0
-        texture_1 = []
-        texture_2 = []
+        image_count = 0
+        image_front_id = []
+        image_back_id = []
+        image_front_array = []
 
         with open(filename) as obj_file:
             line_obj_file = obj_file.readline()
             while line_obj_file:
 
                 if line_obj_file[:6] == "mtllib":
-                    material_library = line_obj_file[7:]
-                    print("material file exists")
+                    # store material library name .mtl
+                    material_library = "meshesOBJ/" + line_obj_file[7:]
 
                 if line_obj_file[:2] == "v ":
                     vx, vy, vz = [float(value) for value in line_obj_file[2:].split()]
@@ -84,8 +106,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     uvs.append((vx, vy))
 
                 if line_obj_file[:6] == "usemtl":
-                    current_material += 1
-                    print("found new material")
+                    image_count += 1
 
                 if line_obj_file[:2] == "f ":
                     t1, t2, t3 = [value for value in line_obj_file[2:].split()]
@@ -102,23 +123,47 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     normal_ind.append([int(value) for value in t2.split('/')][2] - 1)
                     normal_ind.append([int(value) for value in t3.split('/')][2] - 1)
 
-                    # if a material library does not exist use front_image ***** update when no image required default to default color
-                    if material_library is None:
-                        texture_1.append(int(1))
-                        texture_1.append(int(1))
-                        texture_1.append(int(1))
+                    # use front_image
+                    if image_front is not None:
+                        image_front_id.append(int(1))
+                        image_front_id.append(int(1))
+                        image_front_id.append(int(1))
+                    elif material_library is not None:
+                        # image_front does not exist use mtl library
+                        image_front_id.append(int(image_count))
+                        image_front_id.append(int(image_count))
+                        image_front_id.append(int(image_count))
+                    else:
+                        # otherwise default color
+                        image_front_id.append(int(0))
+                        image_front_id.append(int(0))
+                        image_front_id.append(int(0))
 
-                        if image_back is None:
-                            texture_2.append(int(0))
-                            texture_2.append(int(0))
-                            texture_2.append(int(0))
-                        else:
-                            texture_2.append(int(2))
-                            texture_2.append(int(2))
-                            texture_2.append(int(2))
+                    if image_back is not None:
+                        # use back_image
+                        image_back_id.append(int(1))
+                        image_back_id.append(int(1))
+                        image_back_id.append(int(1))
+                    else:
+                        # otherwise default color
+                        image_back_id.append(int(0))
+                        image_back_id.append(int(0))
+                        image_back_id.append(int(0))
 
                 line_obj_file = obj_file.readline()
-        #print(uvs_ind)
-        #print(texture_1)
-        #print(texture_2)
-        return vertices, triangles, uvs, uvs_ind, normals, normal_ind, texture_1, texture_2
+
+        # if image_front is specified then ignore mtl file // image_back can still be manually specified -> doesn't exist atm via mtl file
+        if image_front is not None:
+            image_front_array = [image_front]
+        elif material_library is not None:
+            with open("meshesOBJ/cube.mtl") as mtl_file:
+                line_mtl_file = mtl_file.readline()
+                while line_mtl_file:
+                    if line_mtl_file[:6] == "map_Kd":
+                        # store texture name .mtl
+                        line_mtl_file.split(" ")
+                        # fix the \n crap instead of :-1
+                        image_front_array.append(line_mtl_file[7:-1])
+                    line_mtl_file = mtl_file.readline()
+
+        return vertices, triangles, uvs, uvs_ind, normals, normal_ind, image_front_id, image_back_id, image_front_array, image_back

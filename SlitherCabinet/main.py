@@ -1,5 +1,6 @@
 # Operating system
-"""None"""
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 # Python packages
 """None"""
 # Local modules
@@ -39,6 +40,8 @@ class MainApp(MainWindow):
         self.program_id = None
         self.lights = []
         self.window_settings_minimized = None
+        # perhaps store normal state?????
+        self.window_settings_normal = QtCore.QSettings("Slither", "normal")
         self.window_settings_maximized = QtCore.QSettings("Slither", "maximized")
 
         self.mouse_x = 0
@@ -83,6 +86,8 @@ class MainApp(MainWindow):
         self.grid_function(True)
         self.three_d_function()
 
+        self.maximize_function()
+
     def minimize_function(self):
         window.showMinimized()
 
@@ -115,7 +120,7 @@ class MainApp(MainWindow):
         # Loop to create and store objects
         for mesh in mesh_data_app:
             obj = LoadVBO(mesh["mesh"],
-                          mesh["texture_front"],
+                          image_front=mesh["texture_front"],
                           image_back=mesh["texture_back"],
                           shader=self.shader_textured)
             self.meshes_app.append(obj)
@@ -208,7 +213,6 @@ class MainApp(MainWindow):
         if gl_loop < 10 and load_once:
             for mesh in mesh_data_user:
                 obj = LoadVBO(mesh["mesh"],
-                              mesh["texture_front"],
                               shader=self.shader_textured,
                               identifier=mesh["identifier"],
                               location=pygame.Vector3(mesh["location"][0], mesh["location"][1], mesh["location"][2]),
@@ -225,7 +229,7 @@ class MainApp(MainWindow):
 
 """1.Close AnimatedSplashScreen() and open MainWindow()"""
 def switch_screens():
-    window.showMaximized()
+    window.show()
     animated_splash_screen.finish(window)
 
 

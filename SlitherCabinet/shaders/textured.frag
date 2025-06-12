@@ -7,7 +7,10 @@ in vec3 view_pos;
 in vec2 UV;
 in vec2 text;
 
-uniform sampler2D tex_front;
+uniform sampler2D tex_front1;
+uniform sampler2D tex_front2;
+uniform sampler2D tex_front3;
+uniform sampler2D tex_front4;
 uniform sampler2D tex_back;
 
 uniform int fbo_switcher;
@@ -75,13 +78,25 @@ void main()
             {
                 if (text[0] == 1)
                 {
-                    frag_color = frag_color * texture(tex_front, UV);
+                    frag_color = frag_color * texture(tex_front1, UV);
+                }
+                else if (text[0] == 2)
+                {
+                    frag_color = frag_color * texture(tex_front2, UV);
+                }
+                else if (text[0] == 3)
+                {
+                    frag_color = frag_color * texture(tex_front3, UV);
+                }
+                else if (text[0] == 4)
+                {
+                    frag_color = frag_color * texture(tex_front4, UV);
                 }
 
             }
             else // Fragment is back facing fragment
             {
-                if (text[1] == 2)
+                if (text[1] == 1)
                 {
                     frag_color = frag_color * texture(tex_back, UV);
                 }

@@ -1,4 +1,12 @@
+# Operating system
+from os import environ
+
+from pygame.examples.cursors import image
+
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+# Python packages
 import pygame
+# Local modules
 from .shader_vectors import *
 from .load_texture import LoadTexture
 from .shader_uniforms import *
@@ -7,14 +15,13 @@ from .transformation_matrices import *
 
 class LoadDefaultVAO:
     def __init__(self, vertices,
-                 # manually assigned texture if not using mtl
-                 image_front=None,
-                 image_back=None,
                  #vertex specific data
                  vertex_normals=None,
                  vertex_uvs=None,
                  vertex_colors=None,
-                 vertex_textures=None,
+                 image_ids=None,
+                 image_front_array=None,
+                 image_back=None,
                  draw_type=GL_TRIANGLES,
                  # static
                  translation=pygame.Vector3(0.0, 0.0, 0.0),
@@ -29,15 +36,15 @@ class LoadDefaultVAO:
                  # pixel picking rgb identifier
                  identifier=None):
 
-        self.shader = shader
         self.vertices = vertices
         self.vertex_normals = vertex_normals
-        self.vertex_colors = vertex_colors
         self.vertex_uvs = vertex_uvs
+        self.vertex_colors = vertex_colors
+        self.vertex_textures_id = image_ids
+
         self.draw_type = draw_type
-        #self.background_color = (45.0 / 255.0, 45.0 / 255.0, 45.0 / 255.0, 1.0)
+        self.shader = shader
         self.identifier = identifier
-        self.vertex_textures = vertex_textures
 
         # CREATE VAO
         # A Vertex Array Object (VAO) is an object which contains one or more Vertex Buffer Objects
@@ -61,9 +68,9 @@ class LoadDefaultVAO:
             vertex_uvs = ShaderVectors("vec2", self.vertex_uvs)
             vertex_uvs.find_variable(self.shader.link_shader, "vertex_uv")
 
-        if self.vertex_textures is not None:
-            vertex_textures = ShaderVectors("vec2", self.vertex_textures)
-            vertex_textures.find_variable(self.shader.link_shader, "vertex_texture")
+        if self.vertex_textures_id is not None:
+            image_ids = ShaderVectors("vec2", self.vertex_textures_id)
+            image_ids.find_variable(self.shader.link_shader, "vertex_texture_id")
 
         # do not change order
         self.model_mat = identity_mat()
@@ -75,15 +82,19 @@ class LoadDefaultVAO:
         self.move_translate = move_translate
         self.move_scale = move_scale
 
-        self.texture_front = None
-        if image_front is not None:
-            self.image = LoadTexture(image_front)
-            self.texture_front = ShaderUniforms("sampler2D", [self.image.id, 1])
+        # convert image -> texture
+        self.vertex_texture_front_array = {}
+        image_count = 1
+        if image_front_array is not None:
+            for img in image_front_array:
+                texture = LoadTexture(img)
+                self.vertex_texture_front_array[f"texture{image_count}"] = ShaderUniforms("sampler2D", [texture.id, image_count])
+                image_count += 1
 
-        self.texture_back = None
+        self.image_back = None
         if image_back is not None:
-            self.image = LoadTexture(image_back)
-            self.texture_back = ShaderUniforms("sampler2D", [self.image.id, 2])
+            img = LoadTexture(image_back)
+            self.image_back = ShaderUniforms("sampler2D", [img.id, image_count])
 
     def draw_default_fbo(self, camera, lights, zoom, roll, pitch, yaw, view,
                          current_pixel_color=None,
@@ -97,7 +108,7 @@ class LoadDefaultVAO:
         fbo_switcher.find_variable(self.shader.link_shader, "fbo_switcher")
         fbo_switcher.load()
 
-        #
+        # pixel picking rgb identifier
         if self.identifier is not None:
             identifier = self.identifier
             identifier = ShaderUniforms("ivec3", identifier)
@@ -119,13 +130,15 @@ class LoadDefaultVAO:
             for light in lights:
                 light.update(self.shader.link_shader, view_mat)
 
-        if self.texture_front is not None:
-            self.texture_front.find_variable(self.shader.link_shader, "tex_front")
-            self.texture_front.load()
+        texture_count = 1
+        for texture in self.vertex_texture_front_array.values():
+            texture.find_variable(self.shader.link_shader, "tex_front" + str(texture_count))
+            texture.load()
+            texture_count += 1
 
-        if self.texture_back is not None:
-            self.texture_back.find_variable(self.shader.link_shader, "tex_back")
-            self.texture_back.load()
+        if self.image_back is not None:
+            self.image_back.find_variable(self.shader.link_shader, "tex_back")
+            self.image_back.load()
 
         if clip_z is not None:
             clip_plane = ShaderUniforms("vec4", (0.0, 0.0, -1.0, clip_z))
