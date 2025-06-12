@@ -213,6 +213,7 @@ class MainApp(MainWindow):
         if gl_loop < 10 and load_once:
             for mesh in mesh_data_user:
                 obj = LoadVBO(mesh["mesh"],
+                              image_front=mesh["texture_front"],
                               shader=self.shader_textured,
                               identifier=mesh["identifier"],
                               location=pygame.Vector3(mesh["location"][0], mesh["location"][1], mesh["location"][2]),
