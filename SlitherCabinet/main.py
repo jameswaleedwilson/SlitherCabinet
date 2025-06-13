@@ -40,9 +40,6 @@ class MainApp(MainWindow):
         self.program_id = None
         self.lights = []
         self.window_settings_minimized = None
-        # perhaps store normal state?????
-        self.window_settings_normal = QtCore.QSettings("Slither", "normal")
-        self.window_settings_maximized = QtCore.QSettings("Slither", "maximized")
 
         self.mouse_x = 0
         self.mouse_y = 0
@@ -56,6 +53,8 @@ class MainApp(MainWindow):
         self.toolButton_axes.setChecked(True)
         self.toolButton_grid.setChecked(True)
         self.toolButton_CAD.setChecked(True)
+        # middle button mouse drag for camera focus from main_window
+        self.camera_focal_point = pygame.Vector3(300, 150, 0)
 
         # opengl gl loop 50 Hz
         self.timer = QtCore.QTimer(self)
@@ -71,7 +70,7 @@ class MainApp(MainWindow):
         # a method used to define widget accepts keyboard focus
         self.openGLWidget.setFocusPolicy(Qt.StrongFocus)
         # a function used to control whether mouse move events (specifically, mouseMoveEvent)
-        # are sent to a widget even when no mouse button is pressed
+            # are sent to a widget even when no mouse button is pressed
         self.openGLWidget.setMouseTracking(True)
         # installEventFilter sends the events to the eventFilter
         self.openGLWidget.installEventFilter(self)
@@ -86,26 +85,21 @@ class MainApp(MainWindow):
         self.grid_function(True)
         self.three_d_function()
 
-        self.maximize_function()
+        window.showMaximized()
 
     def minimize_function(self):
         window.showMinimized()
 
     def maximize_function(self):
         if self.windowState() & QtCore.Qt.WindowState.WindowMaximized:
-            self.restoreGeometry(self.window_settings_maximized.value("geometry"))
-            self.restoreState(self.window_settings_maximized.value("windowState"))
+            window.showNormal()
         else:
-            self.window_settings_maximized.setValue("geometry", self.saveGeometry())
-            self.window_settings_maximized.setValue("windowState", self.saveState())
             window.showMaximized()
 
     def close_function(self):
         window.close()
 
     def initialise_gl(self):
-        # query double buffering
-
         # enable depth testing
         glEnable(GL_DEPTH_TEST)
         # enable blending
@@ -158,8 +152,7 @@ class MainApp(MainWindow):
     def paint_gl(self):
         global gl_loop
         gl_loop += 1
-        #print(gl_loop)
-        self.camera = Camera(self.openGLWidget.width(), self.openGLWidget.height())
+        self.camera = Camera(self.openGLWidget.width(), self.openGLWidget.height(), self.camera_focal_point)
 
         """ START DRAW TO DEFAULT FBO """
         # set default background color -> '*' unpacks tuple
@@ -173,7 +166,6 @@ class MainApp(MainWindow):
 
         for obj in self.meshes_app:
             obj.draw_default_fbo(self.camera, self.lights, self.zoom, self.roll, self.pitch, self.yaw, self.view)
-
         """ END DRAW TO DEFAULT FBO """
 
         """ START DRAW TO CUSTOM FBO """
@@ -216,8 +208,13 @@ class MainApp(MainWindow):
                               image_front=mesh["texture_front"],
                               shader=self.shader_textured,
                               identifier=mesh["identifier"],
-                              location=pygame.Vector3(mesh["location"][0], mesh["location"][1], mesh["location"][2]),
-                              std_scale=pygame.Vector3(mesh["scale"][0], mesh["scale"][1], mesh["scale"][2]))
+                              location=pygame.Vector3(mesh["location"][0],
+                                                      mesh["location"][1],
+                                                      mesh["location"][2]),
+                              rotation=TransformationMatrices(mesh["rotation"][0], mesh["rotation"][1]),
+                              std_scale=pygame.Vector3(mesh["scale"][0],
+                                                       mesh["scale"][1],
+                                                       mesh["scale"][2]))
                 self.meshes_user.append(obj)
             load_once = False
 

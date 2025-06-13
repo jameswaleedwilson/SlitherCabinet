@@ -22,15 +22,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.doubleclick = None
         self.mouse_y = None
         self.mouse_x = None
+
+        # remove grid and axes
         self.grid = None
         self.axes = None
         self.CONST_ISO = math.degrees(math.asin(math.sqrt(2 / 3)))  # ~54.73 degrees
         # remove default window frame
         self.setWindowFlag(Qt.FramelessWindowHint)
-        # mouse drag
+        # left button mouse drag for 3D rotation
         self.first = True
         self.previous = pygame.Vector2(0, 0)
-        self.sensitivity = 1
+        self.rotation_sensitivity = 1
+        self.camera_focal_point_sensitivity = 0.01
         self.roll = None
         self.pitch = None
         self.yaw = None
@@ -40,6 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolButton_previous = ""
         self.toolButton_dimetric_clicked = 0
         self.toolButton_isometric_clicked = 0
+        # middle button mouse drag for camera focus
+        self.camera_focal_point = pygame.Vector3(300, 150, 0)
+
 
         uic.loadUi('ui/MainWindow.ui', self)
         self.verticalSlider_glClipPlane.valueChanged.connect(self.gl_clip_plane_function)
@@ -272,8 +278,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.mouse_x = event.pos().x()
                 self.mouse_y = self.openGLWidget.height() - event.pos().y()
                 self.doubleclick = True
-                
-        # left button down mouse drag
+
+        # left button down mouse drag -> 3D rotation
         if (event.type() == QtCore.QEvent.MouseMove and
                 event.buttons() == QtCore.Qt.LeftButton and
                 0 <= event.pos().x() <= self.openGLWidget.width() and
@@ -296,17 +302,17 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.previous = current
                 self.first = False
             # calculate change in xy
-            change_in_xy = round(current - self.previous)
+            change_in_xy = current - self.previous
             # pos or neg x direction
             if self.toolButton_Xroll.isChecked():
-                self.roll += change_in_xy.y * self.sensitivity
+                self.roll += change_in_xy.y * self.rotation_sensitivity
                 # rotation min max
                 if self.roll >= 360:
                     self.roll -= 360
                 elif self.roll < 0:
                     self.roll += 360
             elif self.toolButton_Ypitch.isChecked():
-                self.pitch += change_in_xy.y * self.sensitivity
+                self.pitch += change_in_xy.y * self.rotation_sensitivity
                 # rotation min max
                 if self.pitch >= 360:
                     self.pitch -= 360
@@ -315,9 +321,9 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.toolButton_Zyaw.isChecked():
                 # check for 2D or 3D view
                 if self.toolButton_2D.isChecked():
-                    self.yaw += change_in_xy.x * self.sensitivity
+                    self.yaw += change_in_xy.x * self.rotation_sensitivity
                 elif self.toolButton_3D.isChecked():
-                    self.yaw -= change_in_xy.x * self.sensitivity
+                    self.yaw -= change_in_xy.x * self.rotation_sensitivity
                 # rotation min max
                 if self.yaw >= 360:
                     self.yaw -= 360
@@ -325,12 +331,32 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.yaw += 360
             # set current to previous
             self.previous = current
+
+        # middle (scroll) button down mouse drag -> camera focal point
+        if (event.type() == QtCore.QEvent.MouseMove and
+                event.buttons() == QtCore.Qt.MiddleButton and
+                0 <= event.pos().x() <= self.openGLWidget.width() and
+                0 <= event.pos().y() <= self.openGLWidget.height()):
+            # get current
+            current = pygame.Vector2(event.pos().x(), event.pos().y() * -1)
+            # on initial click set to current
+            if self.first:
+                QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+                self.previous = current
+                self.first = False
+            # calculate change in xy
+            change_in_xy = current - self.previous
+            self.camera_focal_point.x += change_in_xy.x * self.camera_focal_point_sensitivity * -1
+            self.camera_focal_point.y += change_in_xy.y * self.camera_focal_point_sensitivity * -1
+            print(change_in_xy)
+            print(self.camera_focal_point)
+
         # on release leave drag event
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             self.first = True
             QApplication.restoreOverrideCursor()
             
-        # real time mouse postion
+        # real time mouse position -> pixel picking
         if event.type() == QtCore.QEvent.MouseMove:
             self.real_time_mouse_x = event.pos().x()
             self.real_time_mouse_y = self.openGLWidget.height() - event.pos().y()
@@ -339,9 +365,9 @@ class MainWindow(QtWidgets.QMainWindow):
         if event.type() == QtCore.QEvent.Wheel:
             scroll = event.angleDelta()
             if scroll.y() > 0:
-                if self.zoom > self.sensitivity:
-                    self.zoom -= self.sensitivity
+                if self.zoom > self.rotation_sensitivity:
+                    self.zoom -= self.rotation_sensitivity
             else:
-                self.zoom += self.sensitivity
+                self.zoom += self.rotation_sensitivity
 
         return super(MainWindow, self).eventFilter(source, event)

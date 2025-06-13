@@ -1,3 +1,5 @@
+import pygame
+
 mesh_data_user = \
     [
         {
@@ -5,8 +7,9 @@ mesh_data_user = \
             "mesh": "meshesOBJ/cube.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (0, 0, 0),
-            "scale": (16, 100, 100)
+            "location": (0, 0, -16),
+            "rotation": (-90, pygame.Vector3(0,1,0)),
+            "scale": (100, 100, 16)
         },
 
         {
@@ -15,6 +18,7 @@ mesh_data_user = \
             "texture_front": None,
             "identifier": (1, 0, 0),
             "location": (16, 0, 0),
+            "rotation": (0, pygame.Vector3(0,1,0)),
             "scale": (68, 84, 16)
         },
 
@@ -24,7 +28,8 @@ mesh_data_user = \
             "texture_front": None,
             "identifier": (1, 0, 0),
             "location": (16, 84, 0),
-            "scale": (68, 16, 100)
+            "rotation": (-90, pygame.Vector3(0,1,0)),
+            "scale": (100, 84, 16)
         },
 
         {
@@ -33,6 +38,7 @@ mesh_data_user = \
             "texture_front": None,
             "identifier": (1, 0, 0),
             "location": (16, 0, 84),
+            "rotation": (0, pygame.Vector3(0,1,0)),
             "scale": (68, 50, 16)
         },
 
@@ -41,8 +47,9 @@ mesh_data_user = \
             "mesh": "meshesOBJ/cube.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (84, 0, 0),
-            "scale": (16, 100, 100)
+            "location": (0, 0, -100),
+            "rotation": (-90, pygame.Vector3(0,1,0)),
+            "scale": (100, 100, 16)
         },
 
         {
@@ -51,6 +58,7 @@ mesh_data_user = \
             "texture_front": "textures/dark_grey.png",
             "identifier": (1, 0, 0),
             "location": (84, 40, 50),
+            "rotation": (0, pygame.Vector3(0,1,0)),
             "scale": (1000, 1000, 1000)
         },
     ]

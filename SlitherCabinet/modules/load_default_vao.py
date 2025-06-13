@@ -1,8 +1,5 @@
 # Operating system
 from os import environ
-
-from pygame.examples.cursors import image
-
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 # Python packages
 import pygame
