@@ -91,7 +91,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
 
                 if line_obj_file[:6] == "mtllib":
                     # store material library name .mtl
-                    material_library = "meshesOBJ/" + line_obj_file[7:]
+                    material_library = "meshesOBJ/" + line_obj_file[7:-1]
 
                 if line_obj_file[:2] == "v ":
                     vx, vy, vz = [float(value) for value in line_obj_file[2:].split()]
@@ -156,7 +156,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
         if image_front is not None:
             image_front_array = [image_front]
         elif material_library is not None:
-            with open("meshesOBJ/cube.mtl") as mtl_file:
+            with open(material_library) as mtl_file:
                 line_mtl_file = mtl_file.readline()
                 while line_mtl_file:
                     if line_mtl_file[:6] == "map_Kd":

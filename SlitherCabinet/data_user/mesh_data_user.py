@@ -1,55 +1,61 @@
 import pygame
 
+width = 100
+depth = 100
+height = 100
+cth = 16
+rail_depth = 50
+
 mesh_data_user = \
     [
         {
             "part": "left gable",
-            "mesh": "meshesOBJ/cube.obj",
+            "mesh": "meshesOBJ/left_gable.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (0, 0, -16),
-            "rotation": (-90, pygame.Vector3(0,1,0)),
-            "scale": (100, 100, 16)
+            "location": (0, 0, 0),
+            "rotation": (0, pygame.Vector3(0,1,0)),
+            "scale": (cth, depth, height)
         },
 
         {
             "part": "base",
-            "mesh": "meshesOBJ/cube.obj",
+            "mesh": "meshesOBJ/base.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (16, 0, 0),
+            "location": (cth, 0, 0),
             "rotation": (0, pygame.Vector3(0,1,0)),
-            "scale": (68, 84, 16)
+            "scale": (width - 2 * cth, depth - cth, cth)
         },
 
         {
             "part": "back",
-            "mesh": "meshesOBJ/cube.obj",
+            "mesh": "meshesOBJ/back.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (16, 84, 0),
-            "rotation": (-90, pygame.Vector3(0,1,0)),
-            "scale": (100, 84, 16)
+            "location": (cth, depth - cth, 0),
+            "rotation": (0, pygame.Vector3(0,1,0)),
+            "scale": (width - 2 * cth, cth, height)
         },
 
         {
             "part": "rail",
-            "mesh": "meshesOBJ/cube.obj",
+            "mesh": "meshesOBJ/rail.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (16, 0, 84),
+            "location": (cth, 0, height - cth),
             "rotation": (0, pygame.Vector3(0,1,0)),
-            "scale": (68, 50, 16)
+            "scale": (width - 2 * cth, rail_depth, cth)
         },
 
         {
             "part": "right gable",
-            "mesh": "meshesOBJ/cube.obj",
+            "mesh": "meshesOBJ/right_gable.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (0, 0, -100),
-            "rotation": (-90, pygame.Vector3(0,1,0)),
-            "scale": (100, 100, 16)
+            "location": (width - cth, 0, 0),
+            "rotation": (0, pygame.Vector3(0,1,0)),
+            "scale": (cth, depth, height)
         },
 
         {
