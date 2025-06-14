@@ -1,8 +1,8 @@
 import pygame
 
-width = 100
+width = 200
 depth = 100
-height = 100
+height = 150
 cth = 16
 rail_depth = 50
 
