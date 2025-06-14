@@ -365,8 +365,12 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.first = False
             # calculate change in xy
             change_in_xy = current - self.previous
-            self.camera_focal_point.x += change_in_xy.x * self.camera_focal_point_sensitivity * -1
-            self.camera_focal_point.y += change_in_xy.y * self.camera_focal_point_sensitivity * -1
+            # this is based on isometric 30 degree and will need to adjust to 3D
+            self.camera_focal_point.x += ((change_in_xy.x * -1.15 * self.camera_focal_point_sensitivity) +
+                                          (change_in_xy.y * -1.73 * self.camera_focal_point_sensitivity))
+
+            self.camera_focal_point.y += (change_in_xy.x * 0.57 * self.camera_focal_point_sensitivity +
+                                          (change_in_xy.y * -2 * self.camera_focal_point_sensitivity))
             #print(change_in_xy)
             #print(self.camera_focal_point)
 

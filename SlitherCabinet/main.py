@@ -197,7 +197,7 @@ class MainApp(MainWindow):
         """ END READ PIXELS """
 
         # Update UI
-        self.label_roll.setText('Roll ' + str(self.roll))
+        self.label_roll.setText('Roll ' + str(round(self.roll, 1)))
         self.label_pitch.setText('Pitch ' + str(self.pitch))
         self.label_yaw.setText('Yaw ' + str(self.yaw))
         self.label_zoom.setText('Zoom ' + str(round(self.zoom, 1)))
