@@ -72,8 +72,10 @@ class MainApp(MainWindow):
         # a function used to control whether mouse move events (specifically, mouseMoveEvent)
             # are sent to a widget even when no mouse button is pressed
         self.openGLWidget.setMouseTracking(True)
+        self.frame_titleBar.setMouseTracking(True)
         # installEventFilter sends the events to the eventFilter
         self.openGLWidget.installEventFilter(self)
+        self.frame_titleBar.installEventFilter(self)
         # preset cursor to cross-hairs
         self.openGLWidget.setCursor(Qt.CrossCursor)
 

@@ -272,65 +272,84 @@ class MainWindow(QtWidgets.QMainWindow):
         self.label_clip.setText('Clipped ' + str(value))
 
     def eventFilter(self, source, event):
+
         # left button double click
         if event.type() == QtCore.QEvent.MouseButtonDblClick:
             if event.button() == QtCore.Qt.LeftButton:
-                self.mouse_x = event.pos().x()
-                self.mouse_y = self.openGLWidget.height() - event.pos().y()
-                self.doubleclick = True
+                # currently doing f all
+                #self.doubleclick = True
+                pass
 
-        # left button down mouse drag -> 3D rotation
-        if (event.type() == QtCore.QEvent.MouseMove and
-                event.buttons() == QtCore.Qt.LeftButton and
-                0 <= event.pos().x() <= self.openGLWidget.width() and
-                0 <= event.pos().y() <= self.openGLWidget.height() and
-                any([self.toolButton_Xroll.isChecked(),
-                     self.toolButton_Ypitch.isChecked(),
-                     self.toolButton_Zyaw.isChecked()])):
-            # change settings
-            if self.toolButton_Zyaw.isChecked():
-                self.toolButton_isometric.setChecked(False)
-                self.toolButton_dimetric.setChecked(True)
-            else:
-                self.toolButton_isometric.setChecked(False)
-                self.toolButton_dimetric.setChecked(False)
-            # get current
-            current = pygame.Vector2(event.pos().x(), event.pos().y() * -1)
-            # on initial click set to current
-            if self.first:
-                QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
-                self.previous = current
-                self.first = False
-            # calculate change in xy
-            change_in_xy = current - self.previous
-            # pos or neg x direction
-            if self.toolButton_Xroll.isChecked():
-                self.roll += change_in_xy.y * self.rotation_sensitivity
-                # rotation min max
-                if self.roll >= 360:
-                    self.roll -= 360
-                elif self.roll < 0:
-                    self.roll += 360
-            elif self.toolButton_Ypitch.isChecked():
-                self.pitch += change_in_xy.y * self.rotation_sensitivity
-                # rotation min max
-                if self.pitch >= 360:
-                    self.pitch -= 360
-                elif self.pitch < 0:
-                    self.pitch += 360
-            if self.toolButton_Zyaw.isChecked():
-                # check for 2D or 3D view
-                if self.toolButton_2D.isChecked():
-                    self.yaw += change_in_xy.x * self.rotation_sensitivity
-                elif self.toolButton_3D.isChecked():
-                    self.yaw -= change_in_xy.x * self.rotation_sensitivity
-                # rotation min max
-                if self.yaw >= 360:
-                    self.yaw -= 360
-                elif self.yaw < 0:
-                    self.yaw += 360
-            # set current to previous
-            self.previous = current
+        # mouse move
+        if event.type() == QtCore.QEvent.MouseMove:
+            # left button down
+            if event.buttons() == QtCore.Qt.LeftButton:
+                # left button down mouse drag -> title bar
+                if (0 <= event.pos().x() <= self.frame_titleBar.width() and
+                        0 <= event.pos().y() <= self.frame_titleBar.height()):
+                    # get current "-1" positive y is up as gui 0,0 is top left meaning positive y is down
+                    current = pygame.Vector2(event.pos().x(), event.pos().y() * -1)
+                    # on initial click set to current
+                    if self.first and not self.windowState() & QtCore.Qt.WindowState.WindowMaximized:
+                        #QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+                        self.previous = current
+                        self.first = False
+                    # calculate change in xy
+                    change_in_xy = current - self.previous
+                    new_x = int(self.geometry().x() + change_in_xy.x)
+                    new_y = int(self.geometry().y() - change_in_xy.y)
+                    self.move(new_x, new_y)
+
+                # left button down mouse drag -> 3D rotation
+                elif (0 <= event.pos().x() <= self.openGLWidget.width() and
+                        0 <= event.pos().y() <= self.openGLWidget.height() and
+                        any([self.toolButton_Xroll.isChecked(),
+                             self.toolButton_Ypitch.isChecked(),
+                             self.toolButton_Zyaw.isChecked()])):
+                    # change settings
+                    if self.toolButton_Zyaw.isChecked():
+                        self.toolButton_isometric.setChecked(False)
+                        self.toolButton_dimetric.setChecked(True)
+                    else:
+                        self.toolButton_isometric.setChecked(False)
+                        self.toolButton_dimetric.setChecked(False)
+                    # get current "-1" positive y is up as gui 0,0 is top left meaning positive y is down
+                    current = pygame.Vector2(event.pos().x(), event.pos().y() * -1)
+                    # on initial click set to current
+                    if self.first:
+                        QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+                        self.previous = current
+                        self.first = False
+                    # calculate change in xy
+                    change_in_xy = current - self.previous
+                    # pos or neg x direction
+                    if self.toolButton_Xroll.isChecked():
+                        self.roll += change_in_xy.y * self.rotation_sensitivity
+                        # rotation min max
+                        if self.roll >= 360:
+                            self.roll -= 360
+                        elif self.roll < 0:
+                            self.roll += 360
+                    elif self.toolButton_Ypitch.isChecked():
+                        self.pitch += change_in_xy.y * self.rotation_sensitivity
+                        # rotation min max
+                        if self.pitch >= 360:
+                            self.pitch -= 360
+                        elif self.pitch < 0:
+                            self.pitch += 360
+                    if self.toolButton_Zyaw.isChecked():
+                        # check for 2D or 3D view
+                        if self.toolButton_2D.isChecked():
+                            self.yaw += change_in_xy.x * self.rotation_sensitivity
+                        elif self.toolButton_3D.isChecked():
+                            self.yaw -= change_in_xy.x * self.rotation_sensitivity
+                        # rotation min max
+                        if self.yaw >= 360:
+                            self.yaw -= 360
+                        elif self.yaw < 0:
+                            self.yaw += 360
+                    # set current to previous
+                    self.previous = current
 
         # middle (scroll) button down mouse drag -> camera focal point
         if (event.type() == QtCore.QEvent.MouseMove and
@@ -348,14 +367,14 @@ class MainWindow(QtWidgets.QMainWindow):
             change_in_xy = current - self.previous
             self.camera_focal_point.x += change_in_xy.x * self.camera_focal_point_sensitivity * -1
             self.camera_focal_point.y += change_in_xy.y * self.camera_focal_point_sensitivity * -1
-            print(change_in_xy)
-            print(self.camera_focal_point)
+            #print(change_in_xy)
+            #print(self.camera_focal_point)
 
         # on release leave drag event
         if event.type() == QtCore.QEvent.MouseButtonRelease:
             self.first = True
             QApplication.restoreOverrideCursor()
-            
+
         # real time mouse position -> pixel picking
         if event.type() == QtCore.QEvent.MouseMove:
             self.real_time_mouse_x = event.pos().x()
