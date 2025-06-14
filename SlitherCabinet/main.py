@@ -87,19 +87,17 @@ class MainApp(MainWindow):
         self.grid_function(True)
         self.three_d_function()
 
-        window.showMaximized()
-
     def minimize_function(self):
-        window.showMinimized()
+        main_window.showMinimized()
 
     def maximize_function(self):
         if self.windowState() & QtCore.Qt.WindowState.WindowMaximized:
-            window.showNormal()
+            main_window.showNormal()
         else:
-            window.showMaximized()
+            main_window.showMaximized()
 
     def close_function(self):
-        window.close()
+        main_window.close()
 
     def initialise_gl(self):
         # enable depth testing
@@ -229,9 +227,8 @@ class MainApp(MainWindow):
 
 """1.Close AnimatedSplashScreen() and open MainWindow()"""
 def switch_screens():
-    window.show()
-    animated_splash_screen.finish(window)
-
+    animated_splash_screen.finish(main_window)
+    main_window.show()
 
 """ Run Main App """
 if __name__ == '__main__':
@@ -243,13 +240,12 @@ if __name__ == '__main__':
     # Allows the splash screen to be displayed immediately
     app.processEvents()
 
-    window = MainApp()
-    window.setup_ui()
+    main_window = MainApp()
+    main_window.setup_ui()
 
     # 2.Close AnimatedSplashScreen() and open MainWindow()
     timer = QtCore.QTimer()
     timer.timeout.connect(switch_screens)
-    timer.start(1546)
+    timer.start(11546)
 
-    # window.show()
     app.exec()
