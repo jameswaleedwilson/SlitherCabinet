@@ -85,8 +85,6 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
         image_front_id = []
         image_back_id = []
         image_front_array = []
-        if obj_dimensions is not None:
-            print(obj_dimensions)
 
         with open(filename) as obj_file:
             line_obj_file = obj_file.readline()
@@ -100,13 +98,10 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     vx, vy, vz = [value for value in line_obj_file[2:].split()]
                     if vx == "x":
                         vx = obj_dimensions[0]
-                        print(vx)
                     if vy == "y":
                         vy = obj_dimensions[1]
-                        print(vy)
                     if vz == "z":
                         vz = obj_dimensions[2]
-                        print(vz)
                     vx, vy, vz = float(vx), float(vy), float(vz)
                     vertices.append((vx, vy, vz))
 
