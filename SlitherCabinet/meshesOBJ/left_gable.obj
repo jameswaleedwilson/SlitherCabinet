@@ -2,7 +2,7 @@
 # www.blender.org
 mtllib left_gable.mtl
 o Cube
-v x y z
+v x        y        z
 v x        y        0.000000
 v x        0.000000 z
 v x        0.000000 0.000000

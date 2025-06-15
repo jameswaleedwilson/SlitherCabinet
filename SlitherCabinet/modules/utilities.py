@@ -38,3 +38,12 @@ def link_shader(vertex_shader_code, fragment_shader_code):
     glDeleteShader(vertex_shader_id)
     glDeleteShader(fragment_shader_id)
     return program_id
+
+def formula_from_string(string, obj_dimensions):
+    print(string)
+    print(obj_dimensions)
+    x = obj_dimensions[0]
+    y = obj_dimensions[1]
+    z = obj_dimensions[2]
+    value = eval(string)
+    return value

@@ -88,6 +88,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
 
         with open(filename) as obj_file:
             line_obj_file = obj_file.readline()
+            operators = ["+", "-", "*", "/", "="]
             while line_obj_file:
 
                 if line_obj_file[:6] == "mtllib":
@@ -96,8 +97,12 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
 
                 if line_obj_file[:2] == "v ":
                     vx, vy, vz = [value for value in line_obj_file[2:].split()]
-                    if vx == "x":
-                        vx = obj_dimensions[0]
+                    if "x" in vx:
+                        if len(vx) == 1:
+                            vx = obj_dimensions[0]
+                        else:
+                            vx = formula_from_string(vx, obj_dimensions)
+                    # update to same as x
                     if vy == "y":
                         vy = obj_dimensions[1]
                     if vz == "z":
