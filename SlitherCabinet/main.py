@@ -214,7 +214,8 @@ class MainApp(MainWindow):
                               rotation=TransformationMatrices(mesh["rotation"][0], mesh["rotation"][1]),
                               std_scale=pygame.Vector3(mesh["scale"][0],
                                                        mesh["scale"][1],
-                                                       mesh["scale"][2]))
+                                                       mesh["scale"][2]),
+                              obj_dimensions=mesh["dimensions"])
                 self.meshes_user.append(obj)
             load_once = False
 

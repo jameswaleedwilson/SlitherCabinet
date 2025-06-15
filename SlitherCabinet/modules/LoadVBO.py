@@ -12,6 +12,7 @@ from .utilities import *
 # need error checking
 class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
     def __init__(self, obj_filename,
+                 obj_dimensions=None,
                  image_front=None,
                  draw_type=GL_TRIANGLES,
                  # local once off change
@@ -27,7 +28,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                  image_back=None,
                  identifier=(0, 0, 0)):
 
-        # change the above to pass colour through
+        # return formated data from raw obj
         (coordinates,
          triangles,
          uvs,
@@ -37,7 +38,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
          image_front_id,
          image_back_id,
          image_front_array,
-         image_back) = self.load_mesh(obj_filename, image_front, image_back)
+         image_back) = self.load_mesh(obj_filename, image_front, image_back, obj_dimensions)
 
         vertices = format_vertices(coordinates, triangles)
         vertex_normals = format_vertices(normals, normal_ind)
@@ -69,7 +70,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                          image_back=image_back)
 
     @staticmethod
-    def load_mesh(filename, image_front, image_back):
+    def load_mesh(filename, image_front, image_back, obj_dimensions):
         vertices = []
         triangles = []
         normals = []
@@ -84,6 +85,8 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
         image_front_id = []
         image_back_id = []
         image_front_array = []
+        if obj_dimensions is not None:
+            print(obj_dimensions)
 
         with open(filename) as obj_file:
             line_obj_file = obj_file.readline()
@@ -94,7 +97,17 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     material_library = "meshesOBJ/" + line_obj_file[7:-1]
 
                 if line_obj_file[:2] == "v ":
-                    vx, vy, vz = [float(value) for value in line_obj_file[2:].split()]
+                    vx, vy, vz = [value for value in line_obj_file[2:].split()]
+                    if vx == "x":
+                        vx = obj_dimensions[0]
+                        print(vx)
+                    if vy == "y":
+                        vy = obj_dimensions[1]
+                        print(vy)
+                    if vz == "z":
+                        vz = obj_dimensions[2]
+                        print(vz)
+                    vx, vy, vz = float(vx), float(vy), float(vz)
                     vertices.append((vx, vy, vz))
 
                 if line_obj_file[:2] == "vn":
