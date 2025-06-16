@@ -119,6 +119,8 @@ class MainApp(MainWindow):
                           shader=self.shader_textured)
             self.meshes_app.append(obj)
 
+
+
         # initialise lights
         self.lights.append(Light(pygame.Vector3(-300, -150, 1000), pygame.Vector3(1, 1, 1), 0,
                                  move_with_camera=True))
@@ -247,6 +249,6 @@ if __name__ == '__main__':
     # 2.Close AnimatedSplashScreen() and open MainWindow()
     timer = QtCore.QTimer()
     timer.timeout.connect(switch_screens)
-    timer.start(11546)
+    timer.start(1546)
 
     app.exec()

@@ -70,7 +70,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                          image_back=image_back)
 
     @staticmethod
-    def load_mesh(filename, image_front, image_back, obj_dimensions):
+    def load_mesh(filename, image_front, image_back, obj_dimensions=None):
         vertices = []
         triangles = []
         normals = []
@@ -97,17 +97,13 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
 
                 if line_obj_file[:2] == "v ":
                     vx, vy, vz = [value for value in line_obj_file[2:].split()]
-                    if "x" in vx:
-                        if len(vx) == 1:
-                            vx = obj_dimensions[0]
-                        else:
-                            vx = formula_from_string(vx, obj_dimensions)
-                    # update to same as x
-                    if vy == "y":
-                        vy = obj_dimensions[1]
-                    if vz == "z":
-                        vz = obj_dimensions[2]
+                    if obj_dimensions is not None:
+                        vx = formula_from_string(vx, obj_dimensions)
+                        vy = formula_from_string(vy, obj_dimensions)
+                        vz = formula_from_string(vz, obj_dimensions)
+
                     vx, vy, vz = float(vx), float(vy), float(vz)
+
                     vertices.append((vx, vy, vz))
 
                 if line_obj_file[:2] == "vn":
@@ -176,7 +172,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                         # store texture name .mtl
                         line_mtl_file.split(" ")
                         # fix the \n crap instead of :-1
-                        image_front_array.append(line_mtl_file[7:-1])
+                        image_front_array.append(str("textures/" + line_mtl_file[7:-1]))
                     line_mtl_file = mtl_file.readline()
 
         return vertices, triangles, uvs, uvs_ind, normals, normal_ind, image_front_id, image_back_id, image_front_array, image_back

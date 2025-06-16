@@ -40,10 +40,12 @@ def link_shader(vertex_shader_code, fragment_shader_code):
     return program_id
 
 def formula_from_string(string, obj_dimensions):
-    print(string)
-    print(obj_dimensions)
-    x = obj_dimensions[0]
-    y = obj_dimensions[1]
-    z = obj_dimensions[2]
+    width = obj_dimensions[0]
+    depth = obj_dimensions[1]
+    height = obj_dimensions[2]
+    cth = obj_dimensions[3]
     value = eval(string)
-    return value
+    print(value)
+    formatted_result = f"{value:.6f}"
+    print(formatted_result)
+    return formatted_result

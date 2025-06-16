@@ -26,7 +26,7 @@ mesh_data_app = \
 
         {
             "mesh": "meshesOBJ/app/grid.obj",
-            "texture_front": "textures/grid_solid_bg.png",
+            "texture_front": "textures/grid_bg.png",
             "texture_back": "textures/grid_transparent_bg.png"
         }
     ]

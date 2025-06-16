@@ -8,26 +8,17 @@ rail_depth = 50
 
 mesh_data_user = \
     [
-        {
-            "part": "left gable",
-            "mesh": "meshesOBJ/left_gable.obj",
-            "texture_front": None,
-            "identifier": (1, 0, 0),
-            "location": (0, 0, 0),
-            "rotation": (0, pygame.Vector3(0,1,0)),
-            "scale": (1, 1, 1),
-            "dimensions": [material_1_thickness, depth, height]
-        },
+
 
         {
             "part": "right gable",
-            "mesh": "meshesOBJ/right_gable.obj",
+            "mesh": "meshesOBJ/right_gable_parametric.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (width - material_1_thickness, 0, 0),
+            "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
-            "scale": (material_1_thickness, depth, height),
-            "dimensions": None
+            "scale": (1, 1, 1),
+            "dimensions": [width, depth, height, material_1_thickness]
         },
 
         {
