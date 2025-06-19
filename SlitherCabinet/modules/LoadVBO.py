@@ -88,7 +88,6 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
 
         with open(filename) as obj_file:
             line_obj_file = obj_file.readline()
-            operators = ["+", "-", "*", "/", "="]
             while line_obj_file:
 
                 if line_obj_file[:6] == "mtllib":

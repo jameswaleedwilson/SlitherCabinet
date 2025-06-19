@@ -1,24 +1,64 @@
 import pygame
 
+# cabinet
 width = 200
-depth = 100
-height = 150
-material_1_thickness = 16
-rail_depth = 50
+depth = 300
+height = 300
+# part
+# left gable
+left_gable_thickness = 16
+left_gable_edge_thickness = 1
+# right gable
+right_gable_thickness = 16
+right_gable_edge_thickness = 1
+# back
+back_thickness = 40
+# base
+base_thickness = 30
+base_edge_thickness = 1
+# rail
+rail_depth = 100
+rail_thickness = 20
+rail_edge_thickness = 1
+
 
 mesh_data_user = \
     [
 
-
         {
-            "part": "right gable",
-            "mesh": "meshesOBJ/right_gable_parametric.obj",
+            "part": "right_gable",
+            "mesh": "meshesOBJ/floor_right_gable_parametric.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (0, 0, 0),
+            "location": (6, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
             "scale": (1, 1, 1),
-            "dimensions": [width, depth, height, material_1_thickness]
+            "dimensions": [width, depth, height,
+                           left_gable_thickness, left_gable_edge_thickness,
+                           right_gable_thickness, right_gable_edge_thickness,
+                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
+        },
+
+        {
+            "part": "right_gable_front_edge",
+            "mesh": "meshesOBJ/right_gable_front_edge.obj",
+            "texture_front": None,
+            "identifier": (1, 0, 0),
+            "location": (184, 0, 0),
+            "rotation": (0, pygame.Vector3(0, 1, 0)),
+            "scale": (1, 1, 1),
+            "dimensions": None
+        },
+
+        {
+            "part": "right_gable_bottom_edge",
+            "mesh": "meshesOBJ/right_gable_bottom_edge.obj",
+            "texture_front": None,
+            "identifier": (1, 0, 0),
+            "location": (184, 0, 0),
+            "rotation": (0, pygame.Vector3(0, 1, 0)),
+            "scale": (1, 1, 1),
+            "dimensions": None
         },
 
         {
@@ -26,32 +66,37 @@ mesh_data_user = \
             "mesh": "meshesOBJ/back.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (material_1_thickness, depth - material_1_thickness, 0),
+            "location": (left_gable_thickness, depth - back_thickness, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
-            "scale": (width - 2 * material_1_thickness, material_1_thickness, height),
+            "scale": (width - left_gable_thickness - right_gable_thickness,
+                      back_thickness,
+                      height),
             "dimensions": None
         },
 
         {
             "part": "base",
-            "mesh": "meshesOBJ/base.obj",
+            "mesh": "meshesOBJ/floor_base.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (material_1_thickness, 0, 0),
+            "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0,1,0)),
-            "scale": (width - 2 * material_1_thickness, depth - material_1_thickness, material_1_thickness),
+            "scale": (1, 1, 1),
             "dimensions": None
         },
 
         {
             "part": "rail",
-            "mesh": "meshesOBJ/rail.obj",
+            "mesh": "meshesOBJ/floor_rail_parametric.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (material_1_thickness, 0, height - material_1_thickness),
+            "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0,1,0)),
-            "scale": (width - 2 * material_1_thickness, rail_depth, material_1_thickness),
-            "dimensions": None
+            "scale": (1, 1, 1),
+            "dimensions": [width, depth, height,
+                           left_gable_thickness, left_gable_edge_thickness,
+                           right_gable_thickness, right_gable_edge_thickness,
+                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
         },
 
         {

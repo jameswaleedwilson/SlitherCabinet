@@ -116,6 +116,9 @@ class MainApp(MainWindow):
             obj = LoadVBO(mesh["mesh"],
                           image_front=mesh["texture_front"],
                           image_back=mesh["texture_back"],
+                          location=pygame.Vector3(mesh["location"][0],
+                                                  mesh["location"][1],
+                                                  mesh["location"][2]),
                           shader=self.shader_textured)
             self.meshes_app.append(obj)
 
@@ -249,6 +252,6 @@ if __name__ == '__main__':
     # 2.Close AnimatedSplashScreen() and open MainWindow()
     timer = QtCore.QTimer()
     timer.timeout.connect(switch_screens)
-    timer.start(1546)
+    timer.start(546) # 11546
 
     app.exec()
