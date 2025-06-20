@@ -12,7 +12,7 @@ from .utilities import *
 # need error checking
 class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
     def __init__(self, obj_filename,
-                 obj_dimensions=None,
+                 variables=None,
                  image_front=None,
                  draw_type=GL_TRIANGLES,
                  # local once off change
@@ -38,7 +38,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
          image_front_id,
          image_back_id,
          image_front_array,
-         image_back) = self.load_mesh(obj_filename, image_front, image_back, obj_dimensions)
+         image_back) = self.load_mesh(obj_filename, image_front, image_back, variables)
 
         vertices = format_vertices(coordinates, triangles)
         vertex_normals = format_vertices(normals, normal_ind)
@@ -70,7 +70,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                          image_back=image_back)
 
     @staticmethod
-    def load_mesh(filename, image_front, image_back, obj_dimensions=None):
+    def load_mesh(filename, image_front, image_back, variables=None):
         vertices = []
         triangles = []
         normals = []
@@ -96,10 +96,10 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
 
                 if line_obj_file[:2] == "v ":
                     vx, vy, vz = [value for value in line_obj_file[2:].split()]
-                    if obj_dimensions is not None:
-                        vx = formula_from_string(vx, obj_dimensions)
-                        vy = formula_from_string(vy, obj_dimensions)
-                        vz = formula_from_string(vz, obj_dimensions)
+                    if variables is not None:
+                        vx = formula_from_string(vx, variables)
+                        vy = formula_from_string(vy, variables)
+                        vz = formula_from_string(vz, variables)
 
                     vx, vy, vz = float(vx), float(vy), float(vz)
 

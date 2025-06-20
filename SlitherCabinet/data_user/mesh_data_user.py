@@ -34,10 +34,11 @@ mesh_data_user = \
             "location": (6, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
             "scale": (1, 1, 1),
-            "dimensions": [width, depth, height,
-                           left_gable_thickness, left_gable_edge_thickness,
-                           right_gable_thickness, right_gable_edge_thickness,
-                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
+            "variables": {"width": width, "depth": depth, "height": height,
+                          "right_gable_thickness": right_gable_thickness, "right_gable_edge_thickness": right_gable_edge_thickness,
+                          "left_gable_thickness": left_gable_thickness, "base_thickness": base_thickness,
+                          "back_thickness": back_thickness, "rail_thickness": rail_thickness, "rail_depth": rail_depth
+                          }
         },
 
         {
@@ -48,7 +49,8 @@ mesh_data_user = \
             "location": (184, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
             "scale": (1, 1, 1),
-            "dimensions": None
+            "dimensions": None,
+            "variables": None
         },
 
         {
@@ -59,7 +61,8 @@ mesh_data_user = \
             "location": (184, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
             "scale": (1, 1, 1),
-            "dimensions": None
+            "dimensions": None,
+            "variables": None
         },
 
         {
@@ -70,10 +73,10 @@ mesh_data_user = \
             "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
             "scale": (0.25, 0.25, 0.25),
-            "dimensions": [width, depth, height,
-                           left_gable_thickness, left_gable_edge_thickness,
-                           right_gable_thickness, right_gable_edge_thickness,
-                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
+            "variables": {"width": width, "depth": depth, "height": height,
+                          "back_thickness": back_thickness,
+                          "left_gable_thickness": left_gable_thickness, "right_gable_thickness": right_gable_thickness
+                          }
         },
 
         {
@@ -84,10 +87,10 @@ mesh_data_user = \
             "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0,1,0)),
             "scale": (1, 1, 1),
-            "dimensions": [width, depth, height,
-                           left_gable_thickness, left_gable_edge_thickness,
-                           right_gable_thickness, right_gable_edge_thickness,
-                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
+            "variables": {"width": width, "depth": depth,
+                          "base_thickness": base_thickness, "base_edge_thickness": base_edge_thickness,
+                          "left_gable_thickness": left_gable_thickness, "right_gable_thickness": right_gable_thickness, "back_thickness": back_thickness
+                          }
         },
 
         {
@@ -98,20 +101,10 @@ mesh_data_user = \
             "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0,1,0)),
             "scale": (1, 1, 1),
-            "dimensions": [width, depth, height,
-                           left_gable_thickness, left_gable_edge_thickness,
-                           right_gable_thickness, right_gable_edge_thickness,
-                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
+            "variables": {"width": width, "height": height,
+                          "rail_depth": rail_depth, "rail_thickness": rail_thickness, "rail_edge_thickness": rail_edge_thickness,
+                          "left_gable_thickness": left_gable_thickness, "right_gable_thickness": right_gable_thickness
+                          }
         },
 
-        {
-            "part": "hinge",
-            "mesh": "meshesOBJ/hinge.obj",
-            "texture_front": "textures/dark_grey.png",
-            "identifier": (1, 0, 0),
-            "location": (84, 40, 50),
-            "rotation": (0, pygame.Vector3(0,1,0)),
-            "scale": (1000, 1000, 1000),
-            "dimensions": None
-        },
     ]

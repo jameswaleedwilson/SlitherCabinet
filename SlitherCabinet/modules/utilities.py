@@ -39,20 +39,7 @@ def link_shader(vertex_shader_code, fragment_shader_code):
     glDeleteShader(fragment_shader_id)
     return program_id
 
-def formula_from_string(string, obj_dimensions):
-    width = obj_dimensions[0]
-    depth = obj_dimensions[1]
-    height = obj_dimensions[2]
-    left_gable_thickness = obj_dimensions[3]
-    left_gable_edge_thickness = obj_dimensions[4]
-    right_gable_thickness = obj_dimensions[5]
-    right_gable_edge_thickness = obj_dimensions[6]
-    back_thickness = obj_dimensions[7]
-    base_thickness = obj_dimensions[8]
-    rail_thickness = obj_dimensions[9]
-    rail_edge_thickness = obj_dimensions[10]
-    base_edge_thickness = obj_dimensions[11]
-    rail_depth = obj_dimensions[12]
-    value = eval(string)
+def formula_from_string(string_formula, variables):
+    value = eval(string_formula, variables)
     formatted_result = f"{value:.6f}"
     return formatted_result
