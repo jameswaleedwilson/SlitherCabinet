@@ -1,9 +1,10 @@
 import pygame
 
 # cabinet
-width = 200
-depth = 300
-height = 300
+width = 600
+depth = 560
+height = 720
+
 # part
 # left gable
 left_gable_thickness = 16
@@ -63,26 +64,30 @@ mesh_data_user = \
 
         {
             "part": "back",
-            "mesh": "meshesOBJ/back.obj",
+            "mesh": "meshesOBJ/floor_back_parametric.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
-            "location": (left_gable_thickness, depth - back_thickness, 0),
+            "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0, 1, 0)),
-            "scale": (width - left_gable_thickness - right_gable_thickness,
-                      back_thickness,
-                      height),
-            "dimensions": None
+            "scale": (0.25, 0.25, 0.25),
+            "dimensions": [width, depth, height,
+                           left_gable_thickness, left_gable_edge_thickness,
+                           right_gable_thickness, right_gable_edge_thickness,
+                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
         },
 
         {
             "part": "base",
-            "mesh": "meshesOBJ/floor_base.obj",
+            "mesh": "meshesOBJ/floor_base_parametric.obj",
             "texture_front": None,
             "identifier": (1, 0, 0),
             "location": (0, 0, 0),
             "rotation": (0, pygame.Vector3(0,1,0)),
             "scale": (1, 1, 1),
-            "dimensions": None
+            "dimensions": [width, depth, height,
+                           left_gable_thickness, left_gable_edge_thickness,
+                           right_gable_thickness, right_gable_edge_thickness,
+                           back_thickness, base_thickness, rail_thickness, rail_edge_thickness, base_edge_thickness, rail_depth]
         },
 
         {
