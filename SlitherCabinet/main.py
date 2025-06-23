@@ -210,14 +210,14 @@ class MainApp(MainWindow):
         if gl_loop < 10 and load_once:
             for mesh in mesh_data_user:
                 obj = LoadVBO(mesh["mesh"],
-                              image_front=mesh["texture_front"],
-                              shader=self.shader_textured,
+                              textures=mesh["textures"],
                               identifier=mesh["identifier"],
                               location=pygame.Vector3(mesh["location"][0],
                                                       mesh["location"][1],
                                                       mesh["location"][2]),
                               rotation=TransformationMatrices(mesh["rotation"][0], mesh["rotation"][1]),
                               std_scale=pygame.Vector3(0.25, 0.25, 0.25),
+                              shader=self.shader_textured,
                               variables=mesh["variables"])
                 self.meshes_user.append(obj)
             load_once = False

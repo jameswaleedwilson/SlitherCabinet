@@ -12,8 +12,12 @@ from .utilities import *
 # need error checking
 class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
     def __init__(self, obj_filename,
-                 variables=None,
+                 # textures
+                 textures=None,
                  image_front=None,
+                 # back face of triangle not object
+                 image_back=None,
+                 # draw type
                  draw_type=GL_TRIANGLES,
                  # local once off change
                  location=pygame.Vector3(0, 0, 0),
@@ -23,9 +27,11 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                  move_rotation=TransformationMatrices(0, pygame.Vector3(0, 1, 0)),
                  move_translate=pygame.Vector3(0, 0, 0),
                  move_scale=pygame.Vector3(1, 1, 1),
-
+                 # shader program
                  shader=None,
-                 image_back=None,
+                 # parametric .obj variables
+                 variables=None,
+                 # identifying RGB for pixel picking
                  identifier=(0, 0, 0)):
 
         # return formated data from raw obj
@@ -38,7 +44,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
          image_front_id,
          image_back_id,
          image_front_array,
-         image_back) = self.load_mesh(obj_filename, image_front, image_back, variables)
+         image_back) = self.load_mesh(obj_filename, image_front, image_back, variables, textures)
 
         vertices = format_vertices(coordinates, triangles)
         vertex_normals = format_vertices(normals, normal_ind)
@@ -70,7 +76,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                          image_back=image_back)
 
     @staticmethod
-    def load_mesh(filename, image_front, image_back, variables=None):
+    def load_mesh(filename, image_front, image_back, variables=None, textures=None):
         vertices = []
         triangles = []
         normals = []
@@ -113,7 +119,9 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     vx, vy = [float(value) for value in line_obj_file[2:].split()]
                     uvs.append((vx, vy))
 
+                # image front array here
                 if line_obj_file[:6] == "usemtl":
+                    # change this to image_array_id
                     image_count += 1
 
                 if line_obj_file[:2] == "f ":
@@ -131,7 +139,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     normal_ind.append([int(value) for value in t2.split('/')][2] - 1)
                     normal_ind.append([int(value) for value in t3.split('/')][2] - 1)
 
-                    # use front_image
+                    # use front_image first
                     if image_front is not None:
                         image_front_id.append(int(1))
                         image_front_id.append(int(1))
@@ -148,12 +156,12 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                         image_front_id.append(int(0))
 
                     if image_back is not None:
-                        # use back_image
+                        # use back_image 1 = True
                         image_back_id.append(int(1))
                         image_back_id.append(int(1))
                         image_back_id.append(int(1))
                     else:
-                        # otherwise default color
+                        # use back_image 0 = False, then use default color = white atm
                         image_back_id.append(int(0))
                         image_back_id.append(int(0))
                         image_back_id.append(int(0))
@@ -161,6 +169,7 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                 line_obj_file = obj_file.readline()
 
         # if image_front is specified then ignore mtl file // image_back can still be manually specified -> doesn't exist atm via mtl file
+        # consider ignoring the mtl file altogether as values will be stored with materials
         if image_front is not None:
             image_front_array = [image_front]
         elif material_library is not None:
@@ -170,8 +179,15 @@ class LoadVBO(LoadDefaultVAO, LoadCustomVAO):
                     if line_mtl_file[:6] == "map_Kd":
                         # store texture name .mtl
                         line_mtl_file.split(" ")
-                        # fix the \n crap instead of :-1
-                        image_front_array.append(str("textures/" + line_mtl_file[7:-1]))
+
+                        if textures is not None:
+                            # fix the \n crap instead of :-1 + 4 to remove.jpg
+                            texture = line_mtl_file[7:-5]
+                            texture = find_texture(texture, textures)
+                            image_front_array.append(str("textures/" + texture))
+                        else:
+                            image_front_array.append(str("textures/debug_empty.png"))
+                        print("times run")
                     line_mtl_file = mtl_file.readline()
 
         return vertices, triangles, uvs, uvs_ind, normals, normal_ind, image_front_id, image_back_id, image_front_array, image_back

@@ -43,3 +43,9 @@ def formula_from_string(string_formula, variables):
     value = eval(string_formula, variables)
     formatted_result = f"{value:.6f}"
     return formatted_result
+
+def find_texture(string, textures):
+    for key, value in textures.items():
+        if string == key:
+            formatted_result = value + ".jpg"
+            return formatted_result
