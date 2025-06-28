@@ -52,7 +52,7 @@ class MainApp(MainWindow):
         self.verticalSlider_glClipPlane.setValue(300)
         self.toolButton_axes.setChecked(True)
         self.toolButton_grid.setChecked(True)
-        self.toolButton_CAD.setChecked(True)
+        #self.toolButton_CAD.setChecked(True)
         # middle button mouse drag for camera focus from main_window
         self.camera_focal_point = pygame.Vector3(300, 150, 0)
 
@@ -114,8 +114,8 @@ class MainApp(MainWindow):
         # Loop to create and store objects
         for mesh in mesh_data_app:
             obj = LoadVBO(mesh["mesh"],
-                          image_front=mesh["texture_front"],
-                          image_back=mesh["texture_back"],
+                          image_face=mesh["image_face"],
+                          image_back=mesh["image_back"],
                           location=pygame.Vector3(mesh["location"][0],
                                                   mesh["location"][1],
                                                   mesh["location"][2]),
@@ -210,7 +210,7 @@ class MainApp(MainWindow):
         if gl_loop < 10 and load_once:
             for mesh in mesh_data_user:
                 obj = LoadVBO(mesh["mesh"],
-                              textures=mesh["textures"],
+                              image_face_array=mesh["image_face_array"],
                               identifier=mesh["identifier"],
                               location=pygame.Vector3(mesh["location"][0],
                                                       mesh["location"][1],

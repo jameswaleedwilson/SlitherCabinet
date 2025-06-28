@@ -39,12 +39,18 @@ def link_shader(vertex_shader_code, fragment_shader_code):
     glDeleteShader(fragment_shader_id)
     return program_id
 
-def formula_from_string(string_formula, variables):
+def value_from_string_formula(string_formula, variables):
     value = eval(string_formula, variables)
     formatted_result = f"{value:.6f}"
     return formatted_result
 
-def find_texture(string, textures):
+def find_image_from_material(string, image_face_array):
+    image = eval(string, image_face_array)
+    formatted_result = str(image)
+    return formatted_result
+
+# old function for iterating through nested dict
+def find_texture2(string, textures):
     for key, value in textures.items():
         if string == key:
             formatted_result = value + ".jpg"

@@ -13,11 +13,11 @@ with open(filename, "r") as obj_file:
 
             # x axis
             if float(vx) <= 0.0:
-                vx = "width-right_gable_thickness"
+                vx = "cabinet_width-right_gable_thickness"
             elif 0 < float(vx) < 16:
-                vx = "width-right_gable_thickness+" + vx
+                vx = "cabinet_width-right_gable_thickness+" + vx
             elif 16 <= float(vx):
-                vx = "width"
+                vx = "cabinet_width"
             else:
                 print("x no range")
 
@@ -33,14 +33,14 @@ with open(filename, "r") as obj_file:
                 vy = "rail_depth-" + str(round(100 - float(vy), 6))
                 # bottom mortise rear
             elif 216 <= float(vy) <= 244:
-                vy = "depth-back_thickness-" + str(round(300 - 16 - float(vy), 6))
+                vy = "cabinet_depth-back_thickness-" + str(round(300 - 16 - float(vy), 6))
                 # rear mortise
             elif float(vy) == 284:
-                vy = "depth-back_thickness"
+                vy = "cabinet_depth-back_thickness"
             elif 284 < float(vy) < 300:
-                vy = "depth-back_thickness+" + str(round(16 - (300- float(vy)), 6))
+                vy = "cabinet_depth-back_thickness+" + str(round(16 - (300- float(vy)), 6))
             elif 300 == float(vy):
-                vy = "depth"
+                vy = "cabinet_depth"
             else:
                 print("y no range")
 
@@ -55,23 +55,23 @@ with open(filename, "r") as obj_file:
             elif float(vz) == 16.0:
                 vz = "base_thickness"
             elif 232 <= float(vz) <= 240:
-                vz = "height-" + str(round(300 - float(vz), 6))
+                vz = "cabinet_height-" + str(round(300 - float(vz), 6))
             elif 284 == float(vz):
-                vz = "height-rail_thickness"
+                vz = "cabinet_height-rail_thickness"
                 # rail
             elif 284 < float(vz) < 300:
-                vz = "height-rail_thickness+" + str(round(16 - (300- float(vz)), 6))
+                vz = "cabinet_height-rail_thickness+" + str(round(16 - (300- float(vz)), 6))
                 # top edge
             elif 300 == float(vz):
-                vz = "height"
+                vz = "cabinet_height"
                 # not accounted for
             else:
                 print("z no range")
 
 
 
-            new_lines.append("v " + vx.ljust(40) + " "
-                                  + vy.ljust(40) + " "
+            new_lines.append("v " + vx.ljust(44) + " "
+                                  + vy.ljust(38) + " "
                                   + vz.ljust(40) + " "
                                   + "\n")
 

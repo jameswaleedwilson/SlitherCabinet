@@ -374,7 +374,7 @@ QToolButton:hover {
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QToolButton" name="toolButton_CAD">
+            <widget class="QToolButton" name="toolButton_new_job">
              <property name="toolTip">
               <string>CAD</string>
              </property>

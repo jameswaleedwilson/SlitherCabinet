@@ -4,13 +4,12 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 # Python packages
 import math
 import pygame
-
 from PyQt5 import QtWidgets, uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtWidgets import QApplication
 # Local modules
-"""None"""
+from SlitherCabinet.modules.new_job_dialog import NewJobDialog
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -71,7 +70,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolButton_Xroll.clicked.connect(self.x_roll_function)
         self.toolButton_Ypitch.clicked.connect(self.y_pitch_function)
         self.toolButton_Zyaw.clicked.connect(self.z_yaw_function)
+        self.toolButton_new_job.clicked.connect(self.new_job_function)
 
+    # Functions handled in main.py
     def setup_ui(self):
         pass
 
@@ -84,6 +85,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def paintGL(self):
         pass
 
+    # Tile bar functions
     def minimize_function(self):
         pass
 
@@ -93,6 +95,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def close_function(self):
         pass
 
+    # New Job functions
+    def new_job_function(self):
+        dialog = NewJobDialog(self)
+        dialog.exec()
+
+    # View Functions
     def axes_function(self, event):
         self.axes = event
 
@@ -302,8 +310,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 # left button down mouse drag -> 3D rotation
                 elif (0 <= event.pos().x() <= self.openGLWidget.width() and
-                        0 <= event.pos().y() <= self.openGLWidget.height() and
-                        any([self.toolButton_Xroll.isChecked(),
+                      0 <= event.pos().y() <= self.openGLWidget.height() and
+                      any([self.toolButton_Xroll.isChecked(),
                              self.toolButton_Ypitch.isChecked(),
                              self.toolButton_Zyaw.isChecked()])):
                     # change settings

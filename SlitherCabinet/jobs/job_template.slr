@@ -1,0 +1,23 @@
+meta_data = {"program": "Slither Cabinet",
+             "user": None,
+             "date_created": None,
+             "date_modified": [{"user": None, "date": None}]
+
+}
+xero_data = {"job_numer": None, # Cannot process job without one -> this will form (name).slr
+             "client_details": {"name": None, "address": None, "phone": None, "email": None},
+             "quote_number": None,
+             "invoice_number": None
+             }
+
+materials = {}
+
+hardware = {}
+
+cabinets = {}
+
+#!!!Objects Start:
+#obj = [[cube.obj, grey.png], [sphere.obj, grey.png]]
+#ID = 1, Object = Box, [mesh = cube.obj, location = (300, 150,0)]
+#ID = 2, Object = Sphere, [mesh = sphere.obj, location = (200, 150,0)]
+#ID = 3, Object = Box, [mesh = cube.obj, location = (100, 150,0)]
