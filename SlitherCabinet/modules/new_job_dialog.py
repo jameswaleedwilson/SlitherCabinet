@@ -12,7 +12,7 @@ class NewJobDialog(QDialog):
         # SUDO connect to xero, get user and contacts to replace sample data below
         with open('data_xero/xero_contacts_sample.json', 'r') as sample_file:
             self.json_data = json.load(sample_file)
-        # extract contacts data only
+        # extract contacts data only - removes header data
         self.json_data = self.json_data['Contacts']
         self.slither_version = 'Slither Cabinet 1.0'
         self.datetime = str(datetime.datetime.now())
