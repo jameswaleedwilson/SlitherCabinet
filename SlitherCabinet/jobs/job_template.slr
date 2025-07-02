@@ -1,5 +1,6 @@
-meta_data = {"program": "Slither Cabinet",
-             "user": None,
+meta_data = {"program": None,
+             "xero_userid": None,
+             "name": None,
              "date_created": None,
              "date_modified": [{"user": None, "date": None}]
 

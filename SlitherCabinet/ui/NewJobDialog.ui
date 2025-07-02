@@ -61,6 +61,23 @@
     </layout>
    </item>
    <item>
+    <widget class="QLineEdit" name="lineEdit_xero_search">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string extracomment="search xero contacts"/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="textEdit_xero_contacts">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
