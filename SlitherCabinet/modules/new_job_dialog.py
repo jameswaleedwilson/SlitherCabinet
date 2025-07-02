@@ -75,10 +75,11 @@ class NewJobDialog(QDialog):
                     "date_created": self.datetime,
                 }
         }
-
+        # need to create file name structure from xero data ??????
         try:
             with open('jobs/new_file_x.json', 'x') as new_job_file:
                 # noinspection PyTypeChecker
                 json.dump(meta_data, new_job_file, indent=4)
         except FileExistsError:
-            print("File 'new_file_x.slr' already exists.")
+            # then open existing job or create version 'b' ????
+            print("File 'new_file_x.json' already exists.")
