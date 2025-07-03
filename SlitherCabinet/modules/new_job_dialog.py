@@ -18,7 +18,7 @@ class NewJobDialog(QDialog):
         self.slither_version = 'Slither Cabinet 1.0'
         self.datetime = str(datetime.datetime.now())
         #get users info from Xero
-        self.xero_userid,self.name = xero_func.accounting_get_users()
+        self.xero_userid,self.name = xero_func.accounting_get_user()
 
         # setup UI
         uic.loadUi('ui/NewJobDialog.ui', self)

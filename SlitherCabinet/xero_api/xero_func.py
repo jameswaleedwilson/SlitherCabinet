@@ -112,7 +112,7 @@ def add_Contact(data) :
         return f"Token refresh failed: {e}"
    
 #GetUser
-def accounting_get_users():
+def accounting_get_user():
     new_tokens = refresh_token()
     token = get_yaml_value('id_token')
     decoded = jwt.decode(token, options={"verify_signature": False})
