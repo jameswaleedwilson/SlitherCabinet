@@ -59,7 +59,7 @@ def refresh_token():
         id_token =  (response.json())['id_token']
         #update refresh token in config file
         update_config('id_token',id_token)
-        update_config('refresh_token',new_refresh_token);
+        update_config('refresh_token',new_refresh_token)
         return new_tokens
     except requests.exceptions.RequestException as e:
         return f"Token refresh failed: {e}"

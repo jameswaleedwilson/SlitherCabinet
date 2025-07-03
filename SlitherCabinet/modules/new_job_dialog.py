@@ -1,11 +1,8 @@
 import datetime
 import json
-import jwt
-
 
 from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
-
 from SlitherCabinet.xero_api import xero_func
 
 
