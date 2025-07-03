@@ -1,11 +1,9 @@
 import datetime
 import json
-import jwt
-import xero_func
 
 from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
-
+from SlitherCabinet.xero_api import xero_func
 
 
 class NewJobDialog(QDialog):
@@ -14,7 +12,7 @@ class NewJobDialog(QDialog):
         # SUDO connect to xero, get user and contacts to replace sample data below
         #with open('data_xero/xero_contacts_sample.json', 'r') as sample_file:
             #self.json_data = json.load(sample_file)
-        self.json_data = xero_func.accounting_get_contacts();
+        self.json_data = xero_func.accounting_get_contacts()
         # extract contacts data only - removes header data
         self.json_data = self.json_data['Contacts']
         self.slither_version = 'Slither Cabinet 1.0'
@@ -25,7 +23,9 @@ class NewJobDialog(QDialog):
         #self.xero_userid = decoded["xero_userid"]
         #self.name = decoded["name"]
         #get users info from Xero
+
         users_data = xero_func.accounting_get_users()
+
         users = users_data['Users']
         self.xero_userid = users[0]['UserID']
         self.name = users[0]['FirstName'] + ' ' + users[0]['LastName'] 
