@@ -1,0 +1,7 @@
+accounting_endpoint: https://api.xero.com/api.xro/2.0/Contacts
+client_id: FE113E9CF179467B89938E696997987B
+client_secret: hSrywjub_dTjiXS0v4jVjiKw9omjqDdrGjApcy43QlDIsCRN
+refresh_token: n3J5TKeWUZFUj1-9s7cBH__RT2Lju5jqChyH1Z0qs5U
+tenant_id: 20e36e0f-5762-46af-9851-98bb0bb4de09
+tokenapi_url: https://identity.xero.com/connect/token
+user_endpoint: https://api.xero.com/api.xro/2.0/Users
