@@ -1,6 +1,7 @@
 from base64 import b64encode
 import requests
 import yaml 
+import jwt
 #get value from config file
 def get_yaml_value(*keys):
     file_path='xero_config.yaml'
@@ -16,9 +17,8 @@ def get_yaml_value(*keys):
     return value
 
 #update Refresh Token in config File
-def update_config( new_value):
+def update_config( key,new_value):
     file_path='xero_config.yaml'
-    key = 'refresh_token'
     with open(file_path, 'r') as f:
         config = yaml.safe_load(f)
 
@@ -54,10 +54,12 @@ def refresh_token():
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
         #get access token
         new_tokens = (response.json())['access_token']
-        #get refresh token
+        #get refresh token        
         new_refresh_token = (response.json())['refresh_token']
+        id_token =  (response.json())['id_token']
         #update refresh token in config file
-        update_config(new_refresh_token);
+        update_config('id_token',id_token)
+        update_config('refresh_token',new_refresh_token);
         return new_tokens
     except requests.exceptions.RequestException as e:
         return f"Token refresh failed: {e}"
@@ -111,46 +113,32 @@ def add_Contact(data) :
    
 #GetUser
 def accounting_get_users():
-    #get xero user End Point
-    endpoint = get_yaml_value('user_endpoint')
-    #get tenant Id
-    tenant_id=get_yaml_value('tenant_id')
-    # refresh token
-    new_tokens = refresh_token()        
-    # Set the API endpoint and headers    
-    headers = {
-        "Authorization": f"Bearer {new_tokens}",
-        "Accept": "application/json",
-        "Xero-tenant-id":f"{tenant_id}"
-    }
+    new_tokens = refresh_token()
+    token = get_yaml_value('id_token')
+    decoded = jwt.decode(token, options={"verify_signature": False})
+    xero_userid = decoded["xero_userid"]
+    name = decoded["name"]
+    return xero_userid, name
+    # #get xero user End Point
+    # endpoint = get_yaml_value('user_endpoint')
+    # #get tenant Id
+    # tenant_id=get_yaml_value('tenant_id')
+    # # refresh token
+    # new_tokens = refresh_token()        
+    # # Set the API endpoint and headers    
+    # headers = {
+    #     "Authorization": f"Bearer {new_tokens}",
+    #     "Accept": "application/json",
+    #     "Xero-tenant-id":f"{tenant_id}"
+    # }
 
-    # Make a GET request to the API
-    response = requests.get(endpoint, headers=headers)
+    # # Make a GET request to the API
+    # response = requests.get(endpoint, headers=headers)
 
-    # Check if the request was successful
-    if response.status_code == 200:
-        users = response.json()
-        return users
-    else:
-        return f"Failed to retrieve contacts: {response.status_code} - {response.text}"   
-
-newcontact = {
-                "Contacts": [
-                    {
-                        "Name": "CM",
-                        "FirstName": "Carine",
-                        "LastName": "Maalouf",
-                        "EmailAddress": "carine.maalouf@toptal.com",
-                        "ContactPersons": [
-                            {
-                            "FirstName": "CC",
-                            "LastName": "HH",
-                            "EmailAddress": "h@h.com",
-                            "IncludeInEmails": "true"
-                            }
-                        ]
-                    }
-                ]
-            }
-
+    # # Check if the request was successful
+    # if response.status_code == 200:
+    #     users = response.json()
+    #     return users
+    # else:
+    #     return f"Failed to retrieve contacts: {response.status_code} - {response.text}"   
 

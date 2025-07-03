@@ -25,10 +25,7 @@ class NewJobDialog(QDialog):
         #self.xero_userid = decoded["xero_userid"]
         #self.name = decoded["name"]
         #get users info from Xero
-        users_data = xero_func.accounting_get_users()
-        users = users_data['Users']
-        self.xero_userid = users[0]['UserID']
-        self.name = users[0]['FirstName'] + ' ' + users[0]['LastName'] 
+        self.xero_userid,self.name = xero_func.accounting_get_users()
         # setup UI
         uic.loadUi('ui/NewJobDialog.ui', self)
         # slither cabinet version
