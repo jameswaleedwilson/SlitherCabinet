@@ -1,0 +1,7 @@
+accounting_endpoint: https://api.xero.com/api.xro/2.0/Contacts
+client_id: {CLIENTID}
+client_secret: {CLIENTSECRET}
+refresh_token: {REFRESHTOKEN}
+tenant_id: {tenantID}
+tokenapi_url: https://identity.xero.com/connect/token
+user_endpoint: https://api.xero.com/api.xro/2.0/Users
