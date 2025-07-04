@@ -2,6 +2,9 @@ from base64 import b64encode
 import requests
 import yaml 
 import jwt
+import webbrowser
+import base64
+
 #get value from config file
 def get_yaml_value(*keys):
     file_path='xero_api/xero_config.yaml'
@@ -27,6 +30,52 @@ def update_config( key,new_value):
     with open(file_path, 'w') as f:
         yaml.dump(config, f)
     print(f"Updated {key} to {new_value}")
+
+def connect_xero():
+     #get Client Id from Config File
+    client_id = get_yaml_value('client_id')
+    #get Client secret from config File
+    client_secret = get_yaml_value('client_secret')
+    #get redirecturl from config File
+    redirect_url = get_yaml_value('redirect_url')
+    #get scope from config File
+    scope = get_yaml_value('scope')    
+
+    b64_id_secret = base64.b64encode(bytes(client_id + ':' + client_secret, 'utf-8')).decode('utf-8')
+    # 1. Send a user to authorize your app    
+    auth_url = ('''https://login.xero.com/identity/connect/authorize?''' +
+                '''response_type=code''' +
+                '''&client_id=''' + client_id +
+                '''&redirect_uri=''' + redirect_url +
+                '''&scope=''' + scope +
+                '''&state=123''')
+    webbrowser.open_new(auth_url)
+    
+    # 2. Users are redirected back to you with a code
+    auth_res_url = input('What is the response URL? ')
+    start_number = auth_res_url.find('code=') + len('code=')
+    end_number = auth_res_url.find('&scope')
+    auth_code = auth_res_url[start_number:end_number]
+    print(auth_code)
+    print('\n')
+    
+    # 3. Exchange the code
+    exchange_code_url = 'https://identity.xero.com/connect/token'
+    response = requests.post(exchange_code_url, 
+                            headers = {
+                                'Authorization': 'Basic ' + b64_id_secret
+                            },
+                            data = {
+                                'grant_type': 'authorization_code',
+                                'code': auth_code,
+                                'redirect_uri': redirect_url
+                            })
+    json_response = response.json()
+    print(json_response)
+    print('\n')
+    
+    # 4. Receive your tokens
+    return [json_response['access_token'], json_response['refresh_token']]
 
 #Get Refresh Access Token
 def refresh_token():
