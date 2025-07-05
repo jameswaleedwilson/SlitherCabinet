@@ -1,7 +1,10 @@
+
 from base64 import b64encode
+
 import requests
 import yaml 
 import jwt
+
 #get value from config file
 def get_yaml_value(*keys):
     file_path='xero_api/xero_config.yaml'
