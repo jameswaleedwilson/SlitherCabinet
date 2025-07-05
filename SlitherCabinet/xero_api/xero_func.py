@@ -7,7 +7,7 @@ import base64
 
 #get value from config file
 def get_yaml_value(*keys):
-    file_path='xero_api/xero_config.yaml'
+    file_path='C:/Users/61415/PycharmProjects/SlitherCabinet/SlitherCabinet/xero_api/xero_config.yaml'
     with open(file_path, 'r') as f:
         config = yaml.safe_load(f)
     # Navigate nested keys
@@ -21,7 +21,7 @@ def get_yaml_value(*keys):
 
 #update Refresh Token in config File
 def update_config( key,new_value):
-    file_path='xero_api/xero_config.yaml'
+    file_path='C:/Users/61415/PycharmProjects/SlitherCabinet/SlitherCabinet/xero_api/xero_config.yaml'
     with open(file_path, 'r') as f:
         config = yaml.safe_load(f)
 
