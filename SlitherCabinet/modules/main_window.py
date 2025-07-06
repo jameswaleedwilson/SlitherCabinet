@@ -106,6 +106,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def connect_xero_function(self):
         dialog = ConnectXeroDialog(self)
         dialog.exec()
+        html_content = """
+        < p > XERO < / p > 
+        < p > Status: < span style = " font-style:italic; color:#00ff00;" > connected < / span > < / p > 
+        """
+        self.label_6.setText(html_content)
 
     # View Functions
     def axes_function(self, event):

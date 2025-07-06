@@ -4,6 +4,7 @@ import yaml
 import jwt
 import webbrowser
 import base64
+from browser_history.browsers import Chrome
 
 #get value from config file
 def get_yaml_value(*keys):
@@ -32,6 +33,23 @@ def update_config(key, new_value):
     print(f"Updated {key} to {new_value}")
 
 def get_tenant_id():
+    #get xero connections end point
+    endpoint = get_yaml_value('connections_endpoint')
+    #get access token
+    access_token = get_yaml_value('access_token')
+    # Set the API endpoint and headers
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Accept": "application/json"
+    }
+    # Make a GET request to the API
+    response = requests.get(endpoint, headers=headers)
+    response.raise_for_status()  # Raise an exception for bad status codes
+    connections = response.json()
+    tenant_ids = [connection['tenantId'] for connection in connections]
+    print(tenant_ids)
+
+
     update_config('tenant_id', "fa8b8c86-1f49-4816-a867-90742c43f327")
 
 def connect_xero():
@@ -53,9 +71,31 @@ def connect_xero():
                 '''&scope=''' + scope +
                 '''&state=123''')
     webbrowser.open_new(auth_url)
+
+    # get url from chrome browser
+    f = Chrome()
+    domain = "https://developer.xero.com/?code="
+    waiting_for_redirect_url = True
+    url = None
+
+    while waiting_for_redirect_url:
+        outputs = f.fetch_history()
+        # his is a list of (datetime.datetime, url) tuples
+        his = outputs.histories
+        last_element = his[-1]
+        url = last_element[1]
+        print(domain)
+        print(url)
+        if domain in url:
+            waiting_for_redirect_url = False
+            print("found redirect url")
+        else:
+            print("waiting for redirect url")
+
     
     # 2. Users are redirected back to you with a code
-    auth_res_url = input('What is the response URL? ')
+    auth_res_url = url
+    #auth_res_url = input('What is the response URL? ')
     start_number = auth_res_url.find('code=') + len('code=')
     end_number = auth_res_url.find('&scope')
     auth_code = auth_res_url[start_number:end_number]
