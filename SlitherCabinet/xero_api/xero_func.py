@@ -20,7 +20,7 @@ def get_yaml_value(*keys):
     return value
 
 #update Refresh Token in config File
-def update_config( key,new_value):
+def update_config(key, new_value):
     file_path='C:/Users/61415/PycharmProjects/SlitherCabinet/SlitherCabinet/xero_api/xero_config.yaml'
     with open(file_path, 'r') as f:
         config = yaml.safe_load(f)
@@ -28,15 +28,18 @@ def update_config( key,new_value):
     config[key] = new_value
 
     with open(file_path, 'w') as f:
-        yaml.dump(config, f)
+        yaml.dump(config, f, width=400)
     print(f"Updated {key} to {new_value}")
 
+def get_tenant_id():
+    update_config('tenant_id', "fa8b8c86-1f49-4816-a867-90742c43f327")
+
 def connect_xero():
-     #get Client Id from Config File
+    #get Client id from Config File
     client_id = get_yaml_value('client_id')
     #get Client secret from config File
     client_secret = get_yaml_value('client_secret')
-    #get redirecturl from config File
+    #get redirect url from config File
     redirect_url = get_yaml_value('redirect_url')
     #get scope from config File
     scope = get_yaml_value('scope')    
@@ -75,13 +78,16 @@ def connect_xero():
     print('\n')
     
     # 4. Receive your tokens
-    return [json_response['access_token'], json_response['refresh_token']]
+    # need some error handling here
+    update_config('access_token', json_response['access_token'])
+    update_config('refresh_token', json_response['refresh_token'])
+    #return [json_response['access_token'], json_response['refresh_token']]
 
 #Get Refresh Access Token
 def refresh_token():
     #get xero api endpoint to refresh token from config file
     tokenapi_url = get_yaml_value('tokenapi_url')
-    #get Client Id from Config File
+    #get Client id from Config File
     client_id = get_yaml_value('client_id')
     #get Client secret from config File
     client_secret = get_yaml_value('client_secret')
@@ -112,6 +118,7 @@ def refresh_token():
         return new_tokens
     except requests.exceptions.RequestException as e:
         return f"Token refresh failed: {e}"
+
 #Get contacts
 def accounting_get_contacts():
     #get xero accounting end point
