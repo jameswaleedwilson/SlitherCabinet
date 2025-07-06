@@ -11,7 +11,6 @@ class NewJobDialog(QDialog):
         super().__init__(parent)
         self.json_data = xero_func.accounting_get_contacts()
         # extract contacts data only - removes header data
-        print(self.json_data)
         self.json_data = self.json_data['Contacts']
         self.slither_version = 'Slither Cabinet 1.0'
         self.datetime = str(datetime.datetime.now())

@@ -10,6 +10,7 @@ from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtWidgets import QApplication
 # Local modules
 from SlitherCabinet.modules.new_job_dialog import NewJobDialog
+from SlitherCabinet.modules.connect_xero_dialog import ConnectXeroDialog
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -71,6 +72,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolButton_Ypitch.clicked.connect(self.y_pitch_function)
         self.toolButton_Zyaw.clicked.connect(self.z_yaw_function)
         self.toolButton_new_job.clicked.connect(self.new_job_function)
+        self.toolButton_connect_xero.clicked.connect(self.connect_xero_function)
 
     # Functions handled in main.py
     def setup_ui(self):
@@ -98,6 +100,11 @@ class MainWindow(QtWidgets.QMainWindow):
     # New Job functions
     def new_job_function(self):
         dialog = NewJobDialog(self)
+        dialog.exec()
+
+    # Connect Xero functions
+    def connect_xero_function(self):
+        dialog = ConnectXeroDialog(self)
         dialog.exec()
 
     # View Functions
