@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
-    <height>471</height>
+    <width>567</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,65 +61,205 @@
     </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEdit_xero_search">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string extracomment="search xero contacts"/>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="textEdit_xero_contacts">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="label_contact">
        <property name="text">
-        <string>Job Number</string>
+        <string>Contact</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_3"/>
-     </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="label_contact_name">
        <property name="text">
-        <string>Customer Name</string>
+        <string>Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_name">
+       <property name="readOnly">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="label_contact_first_name">
        <property name="text">
-        <string>Job Address</string>
+        <string>First Name</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_5"/>
+      <widget class="QLineEdit" name="lineEdit_contact_first_name">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="label_contact_surname">
        <property name="text">
-        <string>Phone</string>
+        <string>Surname</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_6"/>
+      <widget class="QLineEdit" name="lineEdit_contact_surname">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_customer_name"/>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_contact_email">
+       <property name="text">
+        <string>Email</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_email">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_contact_mobile">
+       <property name="text">
+        <string>Mobile</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_mobile">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout_4">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label_contact_postal_address_5">
+       <property name="text">
+        <string>Postal Address</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_contact_address">
+       <property name="text">
+        <string>Address</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_address">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_contact_city">
+       <property name="text">
+        <string>City</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_city">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_contact_state">
+       <property name="text">
+        <string>State</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_state">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_contact_post_code">
+       <property name="text">
+        <string>Post Code</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_post_code">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_contact_country">
+       <property name="text">
+        <string>Country</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="lineEdit_contact_country">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QToolButton" name="toolButton_sync_xero_contact">
+     <property name="text">
+      <string>Sync Xero Contact</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_project">
+       <property name="text">
+        <string>Project</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_project_address">
+       <property name="text">
+        <string>Address</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEdit_project_address">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QToolButton" name="toolButton_sync_xero_project">
+     <property name="text">
+      <string>Sync Xero Project</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -127,12 +267,25 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_slither_version</tabstop>
+  <tabstop>lineEdit_xero_user</tabstop>
+  <tabstop>lineEdit_datetime</tabstop>
+  <tabstop>lineEdit_contact_first_name</tabstop>
+  <tabstop>lineEdit_contact_surname</tabstop>
+  <tabstop>lineEdit_contact_country</tabstop>
+  <tabstop>lineEdit_contact_email</tabstop>
+  <tabstop>lineEdit_contact_mobile</tabstop>
+  <tabstop>toolButton_sync_xero_contact</tabstop>
+  <tabstop>lineEdit_project_address</tabstop>
+  <tabstop>toolButton_sync_xero_project</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
