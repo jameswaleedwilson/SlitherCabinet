@@ -102,9 +102,6 @@ class NewJobDialog(QDialog):
 
                 break
 
-
-
-
         #xero_add_Contact(new_contact)
 
     def display_json(self):
