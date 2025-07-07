@@ -256,6 +256,9 @@ QToolButton:hover {
            <height>16777215</height>
           </size>
          </property>
+         <property name="toolTipDuration">
+          <number>-1</number>
+         </property>
          <property name="styleSheet">
           <string notr="true">QScrollArea {
 	border: 9px solid #04091e;
