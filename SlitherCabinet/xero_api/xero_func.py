@@ -184,7 +184,7 @@ def accounting_get_contacts():
     else:
         return f"Failed to retrieve contacts: {response.status_code} - {response.text}"
 
-def add_Contact(data) :
+def xero_add_Contact(data) :
     #get xero accounting end point
     endpoint = get_yaml_value('accounting_endpoint')  
     #get Tenant Id
@@ -203,9 +203,11 @@ def add_Contact(data) :
         response = requests.post(endpoint, headers=tokenHeaders, json =data)
         # Check if the request was successful
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+        print(response.json())
         return response.json()
     except requests.exceptions.RequestException as e:
-        return f"Token refresh failed: {e}"
+        print(f"add contact failed: {e}")
+        return f"add contact failed: {e}"
    
 #GetUser
 def accounting_get_user():
