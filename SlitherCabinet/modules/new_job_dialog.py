@@ -1,9 +1,10 @@
 import datetime
 import json
 
-from PyQt5.QtWidgets import QDialog, QMessageBox, QLineEdit
+from PyQt5.QtWidgets import QDialog, QLineEdit
 from PyQt5 import uic
 
+from SlitherCabinet.modules.created_new_contact_dialog import CreatedNewContactDialog
 from SlitherCabinet.modules.use_exisitng_contact_dialog import UseExistingContactDialog
 from SlitherCabinet.xero_api.xero_func import xero_add_Contact, accounting_get_user, accounting_get_contacts
 
@@ -11,6 +12,7 @@ from SlitherCabinet.xero_api.xero_func import xero_add_Contact, accounting_get_u
 class NewJobDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.xero_contact_id = None
         self.xero_contacts = None
 
         # 1
@@ -51,6 +53,9 @@ class NewJobDialog(QDialog):
                 dialog = UseExistingContactDialog(contact, self)
                 accept = dialog.exec()
                 if accept:
+                    # get contact id
+                    self.xero_contact_id = contact['ContactID']
+                    print(self.xero_contact_id)
                     # populate new_contact
                     self.lineEdit_contact_name.setText(contact['Name'])
                     self.lineEdit_contact_first_name.setText(contact['FirstName'])
@@ -75,17 +80,79 @@ class NewJobDialog(QDialog):
                 break
 
         # if no contact exist, create new
+        if self.xero_contact_id is None:
+            self.lineEdit_contact_name.setText(name)
+            new_contact = {"name": name,
+                           "FirstName": self.lineEdit_contact_first_name.text(),
+                           "LastName": self.lineEdit_contact_surname.text(),
+                           "IsCustomer": True,
+                           "EmailAddress": self.lineEdit_contact_email.text(),
+                           "Addresses": [
+                               {
+                                   "AddressType": "STREET",
+                                   "City": "",
+                                   "Region": "",
+                                   "PostalCode": "",
+                                   "Country": "",
+                                   "AttentionTo": ""
+                               },
+                               {
+                                   "AddressType": "POBOX",
+                                   "AddressLine1": self.lineEdit_contact_address.text(),
+                                   "City": self.lineEdit_contact_city.text(),
+                                   "Region": self.lineEdit_contact_state.text(),
+                                   "PostalCode": self.lineEdit_contact_post_code.text(),
+                                   "Country": self.lineEdit_contact_country.text(),
+                                   "AttentionTo": ""
+                               }
+                           ],
+                           "Phones": [
+                               {
+                                   "PhoneType": "DDI",
+                                   "PhoneNumber": "",
+                                   "PhoneAreaCode": "",
+                                   "PhoneCountryCode": ""
+                               },
+                               {
+                                   "PhoneType": "DEFAULT",
+                                   "PhoneNumber": self.lineEdit_contact_mobile.text(),
+                                   "PhoneAreaCode": "",
+                                   "PhoneCountryCode": ""
+                               },
+                               {
+                                   "PhoneType": "FAX",
+                                   "PhoneNumber": "",
+                                   "PhoneAreaCode": "",
+                                   "PhoneCountryCode": ""
+                               },
+                               {
+                                   "PhoneType": "MOBILE",
+                                   "PhoneNumber": "",
+                                   "PhoneAreaCode": "",
+                                   "PhoneCountryCode": ""
+                               }
+                           ]
+                           }
 
-        #xero_add_Contact(new_contact)
+            response = xero_add_Contact(new_contact)
+            contact = response['Contacts']
+            self.xero_contact_id = contact[0]['ContactID']
+            # open dialog, print contact info click ok to use
+            dialog = CreatedNewContactDialog(self)
+            dialog.exec()
+
+            # linedit read only
+            line_edits = self.findChildren(QLineEdit)
+            for line_edit in line_edits:
+                line_edit.setReadOnly(True)
+
+            # Disable the QToolButton
+            self.toolButton_sync_xero_contact.setEnabled(False)
+
+
 
     def display_json(self):
         self.textEdit_xero_contacts.setText(json.dumps(self.json_data, indent=4))
-
-
-
-
-
-
 
     def create_new_job(self):
 
