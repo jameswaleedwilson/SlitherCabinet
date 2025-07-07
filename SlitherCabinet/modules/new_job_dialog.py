@@ -1,8 +1,10 @@
 import datetime
 import json
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QMessageBox, QLineEdit
 from PyQt5 import uic
+
+from SlitherCabinet.modules.use_exisitng_contact_dialog import UseExistingContactDialog
 from SlitherCabinet.xero_api.xero_func import xero_add_Contact, accounting_get_user, accounting_get_contacts
 
 
@@ -32,83 +34,58 @@ class NewJobDialog(QDialog):
         self.toolButton_sync_xero_contact.clicked.connect(self.sync_xero_contact)
 
     def sync_xero_contact(self):
-        name = None
         if not self.lineEdit_contact_name.text():
             name = str(self.lineEdit_contact_first_name.text() + " " + self.lineEdit_contact_surname.text())
         else:
             name = str(self.lineEdit_contact_name.text())
-        print(name)
-        new_contact = {"name": name,
-                       "FirstName": self.lineEdit_contact_first_name.text(),
-                       "LastName": self.lineEdit_contact_surname.text(),
-                       "IsCustomer": True,
-                       "EmailAddress": self.lineEdit_contact_email.text(),
-                       "Addresses": [
-                           {
-                               "AddressType": "STREET",
-                               "City": "",
-                               "Region": "",
-                               "PostalCode": "",
-                               "Country": "",
-                               "AttentionTo": ""
-                           },
-                           {
-                               "AddressType": "POBOX",
-                               "AddressLine1": self.lineEdit_contact_address.text(),
-                               "City": self.lineEdit_contact_city.text(),
-                               "Region": self.lineEdit_contact_state.text(),
-                               "PostalCode": self.lineEdit_contact_post_code.text(),
-                               "Country": self.lineEdit_contact_country.text(),
-                               "AttentionTo": ""
-                           }
-                       ],
-                       "Phones": [
-                           {
-                               "PhoneType": "DDI",
-                               "PhoneNumber": "",
-                               "PhoneAreaCode": "",
-                               "PhoneCountryCode": ""
-                           },
-                           {
-                               "PhoneType": "DEFAULT",
-                               "PhoneNumber": self.lineEdit_contact_mobile.text(),
-                               "PhoneAreaCode": "",
-                               "PhoneCountryCode": ""
-                           },
-                           {
-                               "PhoneType": "FAX",
-                               "PhoneNumber": "",
-                               "PhoneAreaCode": "",
-                               "PhoneCountryCode": ""
-                           },
-                           {
-                               "PhoneType": "MOBILE",
-                               "PhoneNumber": "",
-                               "PhoneAreaCode": "",
-                               "PhoneCountryCode": ""
-                           }
-                       ]
-                       }
+
         # get xero contact list
         self.xero_contacts = accounting_get_contacts()
         # extract contacts data only - removes header data
         self.xero_contacts = self.xero_contacts['Contacts']
         # compare name - ignoring case
         for contact in self.xero_contacts:
-            print(contact)
-            print(contact['Name'])
+            # if match is found
             if contact['Name'].casefold() == name.casefold():
-                print("contact exists")
+                # open dialog, print contact info click ok to use
+                dialog = UseExistingContactDialog(contact, self)
+                accept = dialog.exec()
+                if accept:
+                    # populate new_contact
+                    self.lineEdit_contact_name.setText(contact['Name'])
+                    self.lineEdit_contact_first_name.setText(contact['FirstName'])
+                    self.lineEdit_contact_surname.setText(contact['LastName'])
+                    self.lineEdit_contact_email.setText(contact['EmailAddress'])
+                    self.lineEdit_contact_mobile.setText(contact['Phones'][1]['PhoneNumber'])
+                    # AddressLine1 is not default xero structure
+                    self.lineEdit_contact_address.setText(contact['Addresses'][1].get('AddressLine1'))
+                    self.lineEdit_contact_city.setText(contact['Addresses'][1]['City'])
+                    self.lineEdit_contact_state.setText(contact['Addresses'][1]['Region'])
+                    self.lineEdit_contact_post_code.setText(contact['Addresses'][1]['PostalCode'])
+                    self.lineEdit_contact_country.setText(contact['Addresses'][1]['Country'])
+
+                    # linedit read only
+                    line_edits = self.findChildren(QLineEdit)
+                    for line_edit in line_edits:
+                        line_edit.setReadOnly(True)
+
+                    # Disable the QToolButton
+                    self.toolButton_sync_xero_contact.setEnabled(False)
 
                 break
+
+        # if no contact exist, create new
 
         #xero_add_Contact(new_contact)
 
     def display_json(self):
         self.textEdit_xero_contacts.setText(json.dumps(self.json_data, indent=4))
 
-    def search_json(self):
-        pass
+
+
+
+
+
 
     def create_new_job(self):
 
