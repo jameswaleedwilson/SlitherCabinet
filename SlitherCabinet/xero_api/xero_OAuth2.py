@@ -1,8 +1,11 @@
 import base64 
 import webbrowser
-import xero_config_util
+
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from xero_python.api_client import ApiClient
+
+from SlitherCabinet.xero_api import xero_config_util
+
 
 # === 1. Setup a simple HTTP server to receive the auth code ===
 class AuthHandler(BaseHTTPRequestHandler):

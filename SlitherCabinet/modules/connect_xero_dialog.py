@@ -2,7 +2,8 @@
 from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
 
-from SlitherCabinet.xero_api.xero_func import update_config, connect_xero, get_tenant_id
+from SlitherCabinet.xero_api.xero_config_util import update_config
+from SlitherCabinet.xero_api.xero_func import connect_xero
 
 
 class ConnectXeroDialog(QDialog):
@@ -12,8 +13,8 @@ class ConnectXeroDialog(QDialog):
         # setup UI
         uic.loadUi('ui/ConnectXeroDialog.ui', self)
         self.lineEdit_client_id.setText("D854ADD27C42461FBFDB222181A42398")
-        self.lineEdit_client_secret.setText("U4Y3unZcxzIn2yAVepanAMf92eFefcO8mUfEZR5uyC1A7E8U")
-        self.lineEdit_redirect_url.setText("https://developer.xero.com")
+        self.lineEdit_client_secret.setText("1d9vXsRtncOxZkoNyJkb8Wls_s3ukkFYEYmek5Wu7ybICJnF")
+        self.lineEdit_redirect_url.setText("http://localhost:8080/callback")
         self.lineEdit_scope.setText("openid offline_access profile email accounting.contacts accounting.settings accounting.transactions")
 
         self.buttonBox.accepted.connect(self.getTextFromLineEdit)
@@ -25,4 +26,4 @@ class ConnectXeroDialog(QDialog):
         update_config('redirect_url', self.lineEdit_redirect_url.text())
         update_config('scope', self.lineEdit_scope.text())
         connect_xero()
-        get_tenant_id()
+        #get_tenant_id()

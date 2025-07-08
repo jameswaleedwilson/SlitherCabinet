@@ -2,8 +2,9 @@ from base64 import b64encode
 import requests
 import jwt
 import base64
-import xero_config_util
-import xero_OAuth2
+
+from SlitherCabinet.xero_api import xero_config_util, xero_OAuth2
+
 
 def connect_xero():
      #get Client Id from Config File
