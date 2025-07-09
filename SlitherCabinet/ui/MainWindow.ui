@@ -360,68 +360,17 @@ QToolButton:hover {
            <property name="spacing">
             <number>6</number>
            </property>
-           <item row="0" column="0" colspan="4">
-            <widget class="QLabel" name="label_5">
-             <property name="styleSheet">
-              <string notr="true">QLabel {
-	border-top: 1px solid #2d2d2d;
-	border-bottom: 1px solid #2d2d2d;
-}</string>
-             </property>
-             <property name="text">
-              <string>JOB DETAILS</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QToolButton" name="toolButton_new_job">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
+           <item row="3" column="0">
+            <widget class="QToolButton" name="toolButton_2D">
              <property name="toolTip">
-              <string>CAD</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
+              <string>2D</string>
              </property>
              <property name="text">
               <string>...</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../icons/box_cube_cube shape_modelling_shape_icon.png</normaloff>../icons/box_cube_cube shape_modelling_shape_icon.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QToolButton" name="toolButton_mesh">
-             <property name="toolTip">
-              <string>Mesh</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/3d visualization_cad_frame_framework_icon.png</normaloff>../icons/3d visualization_cad_frame_framework_icon.png</iconset>
+               <normaloff>../icons/coordinates-2d-xy.png</normaloff>../icons/coordinates-2d-xy.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -432,25 +381,78 @@ QToolButton:hover {
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
             </widget>
            </item>
-           <item row="1" column="2">
-            <widget class="QToolButton" name="toolButton_slice">
+           <item row="5" column="2">
+            <widget class="QToolButton" name="toolButton_Zyaw">
              <property name="toolTip">
-              <string>Slice</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
+              <string>Rotate Z</string>
              </property>
              <property name="text">
               <string>...</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../icons/deposition_fdm_fused_modeling_icon.png</normaloff>../icons/deposition_fdm_fused_modeling_icon.png</iconset>
+               <normaloff>../icons/axis_rotate_task_z.png</normaloff>../icons/axis_rotate_task_z.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>1761</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="2">
+            <widget class="QToolButton" name="toolButton_dimetric">
+             <property name="toolTip">
+              <string>Dimetric</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../icons/mode-3d-dimetric-wireframe.png</normaloff>../icons/mode-3d-dimetric-wireframe.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QToolButton" name="toolButton_Xroll">
+             <property name="toolTip">
+              <string>Rotate X</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../icons/axis_rotate_task_x.png</normaloff>../icons/axis_rotate_task_x.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -466,20 +468,17 @@ QToolButton:hover {
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
-            <widget class="QToolButton" name="toolButton_animate">
+           <item row="5" column="1">
+            <widget class="QToolButton" name="toolButton_Ypitch">
              <property name="toolTip">
-              <string>Animate</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
+              <string>Rotate Y</string>
              </property>
              <property name="text">
               <string>...</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../icons/drawing_animation_icon.png</normaloff>../icons/drawing_animation_icon.png</iconset>
+               <normaloff>../icons/axis_rotate_task_y.png</normaloff>../icons/axis_rotate_task_y.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -511,88 +510,7 @@ QToolButton:hover {
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QToolButton" name="toolButton_axes">
-             <property name="toolTip">
-              <string>Axes</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/coordinates-3d.png</normaloff>../icons/coordinates-3d.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QToolButton" name="toolButton_grid">
-             <property name="toolTip">
-              <string>Grid</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/grid.png</normaloff>../icons/grid.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="0">
-            <widget class="QToolButton" name="toolButton_2D">
-             <property name="toolTip">
-              <string>2D</string>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/coordinates-2d-xy.png</normaloff>../icons/coordinates-2d-xy.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
             <widget class="QToolButton" name="toolButton_3D">
              <property name="toolTip">
               <string>3D</string>
@@ -618,53 +536,39 @@ QToolButton:hover {
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <widget class="QToolButton" name="toolButton_trimetric">
-             <property name="toolTip">
-              <string>Trimetric</string>
+           <item row="6" column="0" colspan="4">
+            <widget class="QLabel" name="label_6">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	border-top: 1px solid #2d2d2d;
+	border-bottom: 1px solid #2d2d2d;
+}</string>
              </property>
              <property name="text">
-              <string>...</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;XERO&lt;/p&gt;&lt;p&gt;Status: &lt;span style=&quot; font-style:italic; color:#ff0000;&quot;&gt;disconnected&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/axis_design_three dimension.png</normaloff>../icons/axis_design_three dimension.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item row="5" column="2">
-            <widget class="QToolButton" name="toolButton_dimetric">
-             <property name="toolTip">
-              <string>Dimetric</string>
+           <item row="0" column="0" colspan="4">
+            <widget class="QLabel" name="label_5">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	border-top: 1px solid #2d2d2d;
+	border-bottom: 1px solid #2d2d2d;
+}</string>
              </property>
              <property name="text">
-              <string>...</string>
+              <string>JOB</string>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/mode-3d-dimetric-wireframe.png</normaloff>../icons/mode-3d-dimetric-wireframe.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item row="5" column="3">
+           <item row="4" column="3">
             <widget class="QToolButton" name="toolButton_isometric">
              <property name="toolTip">
               <string>Isometric</string>
@@ -693,69 +597,17 @@ QToolButton:hover {
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
-            <widget class="QToolButton" name="toolButton_Xroll">
+           <item row="4" column="1">
+            <widget class="QToolButton" name="toolButton_trimetric">
              <property name="toolTip">
-              <string>Rotate X</string>
+              <string>Trimetric</string>
              </property>
              <property name="text">
               <string>...</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../icons/axis_rotate_task_x.png</normaloff>../icons/axis_rotate_task_x.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QToolButton" name="toolButton_Ypitch">
-             <property name="toolTip">
-              <string>Rotate Y</string>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/axis_rotate_task_y.png</normaloff>../icons/axis_rotate_task_y.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="2">
-            <widget class="QToolButton" name="toolButton_Zyaw">
-             <property name="toolTip">
-              <string>Rotate Z</string>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/axis_rotate_task_z.png</normaloff>../icons/axis_rotate_task_z.png</iconset>
+               <normaloff>../icons/axis_design_three dimension.png</normaloff>../icons/axis_design_three dimension.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -768,23 +620,39 @@ QToolButton:hover {
              </property>
             </widget>
            </item>
-           <item row="7" column="0" colspan="4">
-            <widget class="QLabel" name="label_6">
+           <item row="1" column="0">
+            <widget class="QToolButton" name="toolButton_new_job">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="toolTip">
+              <string>CAD</string>
+             </property>
              <property name="styleSheet">
-              <string notr="true">QLabel {
-	border-top: 1px solid #2d2d2d;
-	border-bottom: 1px solid #2d2d2d;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;XERO&lt;/p&gt;&lt;p&gt;Status: &lt;span style=&quot; font-style:italic; color:#ff0000;&quot;&gt;disconnected&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>...</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="icon">
+              <iconset>
+               <normaloff>../icons/new-file.png</normaloff>../icons/new-file.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
-           <item row="8" column="0">
+           <item row="7" column="0">
             <widget class="QToolButton" name="toolButton_connect_xero">
              <property name="toolTip">
               <string>Connect Xero</string>
@@ -803,19 +671,6 @@ QToolButton:hover {
               </size>
              </property>
             </widget>
-           </item>
-           <item row="9" column="1">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>1761</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>

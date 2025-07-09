@@ -15,7 +15,7 @@ class ConnectXeroDialog(QDialog):
         self.lineEdit_client_id.setText("D854ADD27C42461FBFDB222181A42398")
         self.lineEdit_client_secret.setText("1d9vXsRtncOxZkoNyJkb8Wls_s3ukkFYEYmek5Wu7ybICJnF")
         self.lineEdit_redirect_url.setText("http://localhost:8080/callback")
-        self.lineEdit_scope.setText("openid offline_access profile email accounting.contacts accounting.settings accounting.transactions")
+        self.lineEdit_scope.setText("openid offline_access profile email accounting.contacts accounting.settings accounting.transactions projects")
 
         self.buttonBox.accepted.connect(self.getTextFromLineEdit)
 

@@ -50,8 +50,8 @@ class MainApp(MainWindow):
         self.zoom = 200
         self.background_color = (45.0 / 255.0, 45.0 / 255.0, 45.0 / 255.0, 1.0)
         self.verticalSlider_glClipPlane.setValue(300)
-        self.toolButton_axes.setChecked(True)
-        self.toolButton_grid.setChecked(True)
+        #self.toolButton_axes.setChecked(True)
+        #self.toolButton_grid.setChecked(True)
         #self.toolButton_CAD.setChecked(True)
         # middle button mouse drag for camera focus from main_window
         self.camera_focal_point = pygame.Vector3(300, 150, 0)
@@ -250,6 +250,6 @@ if __name__ == '__main__':
     # 2.Close AnimatedSplashScreen() and open MainWindow()
     timer = QtCore.QTimer()
     timer.timeout.connect(switch_screens)
-    timer.start(546) # 11546
+    timer.start(546) # 11546 for full splashscreen
 
     app.exec()

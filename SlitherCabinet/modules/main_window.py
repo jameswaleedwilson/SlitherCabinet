@@ -61,8 +61,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # View
         self.view = '3D'
         self.yaw2D = 0
-        self.toolButton_axes.clicked.connect(self.axes_function)
-        self.toolButton_grid.clicked.connect(self.grid_function)
+        #self.toolButton_axes.clicked.connect(self.axes_function)
+        #self.toolButton_grid.clicked.connect(self.grid_function)
         self.toolButton_2D.clicked.connect(self.two_d_function)
         self.toolButton_3D.clicked.connect(self.three_d_function)
         self.toolButton_trimetric.clicked.connect(self.trimetric_function)
