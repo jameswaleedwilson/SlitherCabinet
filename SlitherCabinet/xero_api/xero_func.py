@@ -145,9 +145,12 @@ def xero_add_Contact(data) :
    
 #GetUser
 def accounting_get_user():
+    # xero error!!! returns GlobalUserID as UserID
     new_tokens = refresh_token()
     token = xero_config_util.get_yaml_value('id_token')
+    print(token)
     decoded = jwt.decode(token, options={"verify_signature": False})
+    print(decoded)
     xero_userid = decoded["xero_userid"]
     name = decoded["name"]
     return xero_userid, name

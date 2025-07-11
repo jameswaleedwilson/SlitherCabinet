@@ -1,8 +1,24 @@
 {
     "meta_data": {
         "program": "Slither Cabinet 1.0",
-        "xero_userid": "12c45019-61ac-4014-8843-c565e8dedf60",
-        "name": "James Wilson",
-        "date_created": "2025-07-05 17:46:22.572600"
+        "xero_User_id": "12c45019-61ac-4014-8843-c565e8dedf60",
+        "xero_user_name": "James Wilson",
+        "date_created": "2025-07-10 17:38:07.009332"
+    },
+    "xero_contact": {
+        "xero_contact_id": "be5e4648-5909-41ee-babb-6e260e43e9af",
+        "xero_contact_name": "James Wilson"
+    },
+    "project_address": {
+        "address": "500 brisbane road",
+        "city": "James Wilson",
+        "state": "James Wilson",
+        "post_code": "James Wilson",
+        "country": "James Wilson",
+        "project_type": "James Wilson"
+    },
+    "xero_project": {
+        "project_name": "500 brisbane road - Kitchen",
+        "xero_project_id": "e420700b-027c-4394-9b48-27b2adbe6de8"
     }
 }

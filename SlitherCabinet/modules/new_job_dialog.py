@@ -1,26 +1,30 @@
 import datetime
 import json
 
-from PyQt5.QtWidgets import QDialog, QLineEdit, QDialogButtonBox, QMessageBox
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QMessageBox
 from PyQt5 import uic
 
-from SlitherCabinet.modules.created_new_contact_dialog import CreatedNewContactDialog
 from SlitherCabinet.modules.use_exisitng_contact_dialog import UseExistingContactDialog
-from SlitherCabinet.xero_api.xero_func import xero_add_Contact, accounting_get_user, accounting_get_contacts
+from SlitherCabinet.xero_api.xero_func import xero_add_Contact, accounting_get_user, accounting_get_contacts, \
+    xero_new_project
 
 
 class NewJobDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.xero_contact_id = None
+        # locals
+        self.xero_project_id = None
+        self.xero_project_name = None
         self.xero_contacts = None
+        self.xero_contact_id = None
+        self.xero_contact_name = None
 
         # 1
         self.slither_version = 'Slither Cabinet 1.0'
         # 2
         self.datetime = str(datetime.datetime.now())
         # 3 get users info from Xero
-        self.xero_userid, self.xero_user_name = accounting_get_user()
+        self.xero_user_id, self.xero_user_name = accounting_get_user()
 
         # setup UI
         uic.loadUi('ui/NewJobDialog.ui', self)
@@ -55,6 +59,8 @@ class NewJobDialog(QDialog):
 
         # 4 get contact details
         self.toolButton_sync_xero_contact.clicked.connect(self.check_all_line_edits)
+        # 5 get project details
+        self.toolButton_sync_xero_project.clicked.connect(self.sync_xero_project)
 
     def check_all_line_edits(self):
         # Create a list of all QLineEdit objects to check
@@ -91,6 +97,7 @@ class NewJobDialog(QDialog):
                 if accept:
                     # get contact id
                     self.xero_contact_id = contact['ContactID']
+                    self.xero_contact_name = contact['Name']
                     print("contact id: " + self.xero_contact_id)
                     # populate new_contact
                     self.lineEdit_contact_name.setText(contact['Name'])
@@ -98,7 +105,7 @@ class NewJobDialog(QDialog):
                     self.lineEdit_contact_surname.setText(contact['LastName'])
                     self.lineEdit_contact_email.setText(contact['EmailAddress'])
                     self.lineEdit_contact_mobile.setText(contact['Phones'][1]['PhoneNumber'])
-                    # AddressLine1 is not default xero structure
+                    # AddressLine1 is not default xero structure - get()
                     self.lineEdit_contact_address.setText(contact['Addresses'][1].get('AddressLine1'))
                     self.lineEdit_contact_city.setText(contact['Addresses'][1]['City'])
                     self.lineEdit_contact_state.setText(contact['Addresses'][1]['Region'])
@@ -175,14 +182,12 @@ class NewJobDialog(QDialog):
             response = xero_add_Contact(new_contact)
             contact = response['Contacts']
             self.xero_contact_id = contact[0]['ContactID']
+            self.xero_contact_name = contact['Name']
             print("contact id: " + self.xero_contact_id)
             # open dialog, print contact info click ok to use
             QMessageBox.information(self, "Status", "Created New Contact.")
-            #dialog = CreatedNewContactDialog(self)
-            #dialog.exec()
 
             # disable linedit
-            #line_edits = self.findChildren(QLineEdit)
             self.lineEdit_contact_name.setEnabled(False)
             for line_edit in self.line_edits:
                 line_edit.setEnabled(False)
@@ -191,23 +196,47 @@ class NewJobDialog(QDialog):
             self.toolButton_sync_xero_contact.setEnabled(False)
             self.toolButton_sync_xero_project.setEnabled(True)
 
-    def display_json(self):
-        self.textEdit_xero_contacts.setText(json.dumps(self.json_data, indent=4))
+    def sync_xero_project(self):
+        self.xero_project_name = self.lineEdit_project_address.text() + ' - ' + self.comboBox_project_type.currentText()
+        new_project = {"contactId": self.xero_contact_id,
+                       "name": self.xero_project_name
+                       }
+        response = xero_new_project(new_project)
+        self.xero_project_id = response['projectId']
+        self.create_new_job()
 
     def create_new_job(self):
-
         meta_data = {
             "meta_data":
                 {
                     "program": self.slither_version,
-                    "xero_userid": self.xero_userid,
-                    "name": self.xero_user_name,
-                    "date_created": self.datetime,
+                    "xero_User_id": self.xero_user_id,
+                    "xero_user_name": self.xero_user_name,
+                    "date_created": self.datetime
+                },
+            "xero_contact":
+                {
+                    "xero_contact_id": self.xero_contact_id,
+                    "xero_contact_name": self.xero_contact_name
+                },
+            "project_address":
+                {
+                    "address": self.lineEdit_project_address.text(),
+                    "city": self.xero_contact_name,
+                    "state": self.xero_contact_name,
+                    "post_code": self.xero_contact_name,
+                    "country": self.xero_contact_name,
+                    "project_type": self.xero_contact_name
+                },
+            "xero_project":
+                {
+                    "project_name": self.xero_project_name,
+                    "xero_project_id": self.xero_project_id,
                 }
         }
         # need to create file name structure from xero data ??????
         try:
-            with open('jobs/new_file_x.json', 'x') as new_job_file:
+            with open('jobs/new_file_x.json', 'w') as new_job_file: #change back to 'x'
                 # noinspection PyTypeChecker
                 json.dump(meta_data, new_job_file, indent=4)
         except FileExistsError:
